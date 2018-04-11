@@ -2,8 +2,17 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import 'rxjs/Rx';
 import {DatePipe} from '@angular/common';
-import { IncidentService } from '../incident.service';
-import { SiteType } from '../sitetype';
+import { IncidentDataService } from '../services/incident-data.service';
+import { SiteType } from '../models/site-type';
+
+import { ConfirmationType } from '../models/confirmation-type';
+import { County } from '../models/county';
+import { DiscoveryType } from '../models/discovery-type';
+import { Quadrant } from '../models/quadrant';
+import { ReleaseCauseType } from '../models/release-cause-type';
+import { SourceType } from '../models/source-type';
+import { State } from '../models/state';
+import { StreetType } from '../models/street-type';
 
 @Component({
   selector: 'app-incident',
@@ -20,11 +29,19 @@ export class IncidentComponent implements OnInit {
   siteType: FormControl;
   reportedByEmail: FormControl;
 
-
+  confirmationTypes: ConfirmationType[] = [];
+  counties: County[] = [];
+  discoveryTypes: DiscoveryType[] = [];
+  quadrants: Quadrant[] = [];
+  releaseCauseTypes: ReleaseCauseType[] = [];
   siteTypes: SiteType[] = [];
+  sourceTypes: SourceType[] = [];
+  states: State[] = [];
+  streetTypes: StreetType[] = [];
+
   currentDate: Date;
 
-  constructor(private incidentService: IncidentService, private formBuilder: FormBuilder, private datePipe: DatePipe) { }
+  constructor(private incidentDataService: IncidentDataService, private formBuilder: FormBuilder, private datePipe: DatePipe) { }
 
   ngOnInit() {
     this.currentDate = new Date();
@@ -59,14 +76,102 @@ export class IncidentComponent implements OnInit {
     }
   }
 
+  getConfirmationTypes() {
+    this.incidentDataService.getConfirmationTypes().subscribe(
+      // the first argument is a function which runs on success
+      data => { this.confirmationTypes = data; },
+      // the second argument is a function which runs on error
+      err => console.error(err),
+      // the third argument is a function which runs on completion
+      () => console.log('done loading getConfirmationTypes')
+    );
+  }
+
+  getCounties() {
+    this.incidentDataService.getCounties().subscribe(
+      // the first argument is a function which runs on success
+      data => { this.counties = data; },
+      // the second argument is a function which runs on error
+      err => console.error(err),
+      // the third argument is a function which runs on completion
+      () => console.log('done loading getCounties')
+    );
+  }
+
+  getDiscoveryTypes() {
+    this.incidentDataService.getDiscoveryTypes().subscribe(
+      // the first argument is a function which runs on success
+      data => { this.discoveryTypes = data; },
+      // the second argument is a function which runs on error
+      err => console.error(err),
+      // the third argument is a function which runs on completion
+      () => console.log('done loading getDiscoveryTypes')
+    );
+  }
+
+  getQuadrants() {
+    this.incidentDataService.getQuadrants().subscribe(
+      // the first argument is a function which runs on success
+      data => { this.quadrants = data; },
+      // the second argument is a function which runs on error
+      err => console.error(err),
+      // the third argument is a function which runs on completion
+      () => console.log('done loading getQuadrants')
+    );
+  }
+
+  getReleaseCauseTypes() {
+    this.incidentDataService.getReleaseCauseTypes().subscribe(
+      // the first argument is a function which runs on success
+      data => { this.releaseCauseTypes = data; },
+      // the second argument is a function which runs on error
+      err => console.error(err),
+      // the third argument is a function which runs on completion
+      () => console.log('done loading getReleaseCauseTypes')
+    );
+  }
+
   getSiteTypes() {
-    this.incidentService.getSiteTypes().subscribe(
+    this.incidentDataService.getSiteTypes().subscribe(
       // the first argument is a function which runs on success
       data => { this.siteTypes = data; },
       // the second argument is a function which runs on error
       err => console.error(err),
       // the third argument is a function which runs on completion
       () => console.log('done loading sitetypes')
+    );
+  }
+
+  getSourceTypes() {
+    this.incidentDataService.getSourceTypes().subscribe(
+      // the first argument is a function which runs on success
+      data => { this.sourceTypes = data; },
+      // the second argument is a function which runs on error
+      err => console.error(err),
+      // the third argument is a function which runs on completion
+      () => console.log('done loading getSourceTypes')
+    );
+  }
+
+  getStates() {
+    this.incidentDataService.getStates().subscribe(
+      // the first argument is a function which runs on success
+      data => { this.states = data; },
+      // the second argument is a function which runs on error
+      err => console.error(err),
+      // the third argument is a function which runs on completion
+      () => console.log('done loading getStates')
+    );
+  }
+
+  getStreetTypes() {
+    this.incidentDataService.getStreetTypes().subscribe(
+      // the first argument is a function which runs on success
+      data => { this.streetTypes = data; },
+      // the second argument is a function which runs on error
+      err => console.error(err),
+      // the third argument is a function which runs on completion
+      () => console.log('done loading getStreetTypes')
     );
   }
 
@@ -79,8 +184,4 @@ export class IncidentComponent implements OnInit {
   transformDate(date) {
     this.datePipe.transform(date, 'yyyy-MM-dd');
   }
-
-
-
-
 }

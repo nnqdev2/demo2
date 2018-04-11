@@ -5,7 +5,7 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from './app.component';
 import { IncidentComponent } from './incident/incident.component';
-import { IncidentService } from './incident.service';
+import { IncidentDataService } from './services/incident-data.service';
 
 
 
@@ -18,7 +18,7 @@ import { IncidentService } from './incident.service';
   imports: [
     NgbModule.forRoot(), ReactiveFormsModule, HttpClientModule, BrowserModule
   ],
-  providers: [IncidentService],
+  providers: [IncidentDataService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
