@@ -18,7 +18,7 @@
                     <p class="text-left font-weight-bold pl-1" style="background-color: darkSeaGreen">Incident Information</p>
                  
                      <!-- Form incidentForm begins -->
-                     <form [formGroup]="incidentForm" class="form" role="form" autocomplete="off" method="POST" novalidate (ngSubmit)="saveIncident()">
+                     <form [formGroup]="incidentForm" class="form" role="form" autocomplete="off" method="POST" novalidate (ngSubmit)="saveIncident(incidentForm)">
                         <!-- Date Reported -->
                         <div class="form-group col-md-2 mt-2">                               
                                 <label for="dateReceived">Date Reported</label>
@@ -33,21 +33,20 @@
                         </div> -->
                         <div class="input-group">
                             <label class="control-label col-12" for="dateReleaseDiscovered">Date Release Discovered</label>
-                            <input class="form-control required mt-2 col-12" placeholder="yyyy-mm-dd"
+                            <input class="form-control required mt-2 col-md-4" 
                                    name="dp" formControlName="dateReleaseDiscovered" ngbDatepicker #d="ngbDatepicker">
                             <div class="input-group-append">
                               <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
                                 <img src="./assets/images/calendar.png" style="width: 1.2rem; height: 1rem; cursor: pointer;"/>
                               </button>
                             </div>
-                            <span class="help-block" *ngIf="displayMessage.dateReleaseDiscovered">
-                                    {{displayMessage.dateReleaseDiscovered}}
-                            </span>
                         </div>
                         <!-- /Date Released Discovered -->
                         <!-- Site Type -->
                         <div class="form-group required col-md-2 mt-2" 
-                            [ngClass]="{'has-error': displayMessage.siteType }">
+                        [ngClass]="{'has-error': (incidentForm.get('siteType').touched || 
+                                    incidentForm.get('siteType').dirty) &&
+                                    !incidentForm.get('siteType').valid }">
                             <label class="control-label" for="siteType">Site Type</label>
                             <select class="form-control" id="siteType" required="required" formControlName="siteType" >
                                 <option value=""></option>
@@ -56,24 +55,56 @@
                                         {{siteType.siteType}}
                             </option>
                             </select>
-                            <span class="help-block" *ngIf="displayMessage.siteType">
-                                    {{displayMessage.siteType}}
+                            <span class="help-block" *ngIf="(incidentForm.get('siteType').touched || 
+                                incidentForm.get('siteType').dirty) && 
+                                incidentForm.get('siteType').errors">
+                                <span *ngIf="incidentForm.get('siteType').errors.required">
+                            Please enter your first name.
+                            </span>
                             </span>
                         </div>
                         <!-- Reported By Email -->
-                        <div class="form-row mt-4"> 
-                            <div class="form-group required col-md-4 pb-3" [ngClass]="{'has-error': displayMessage.reportedByEmail}"  >
+                        <!-- <div class="form-row mt-4"> 
+                            <div class="form-group required col-md-4 pb-3"   [ngClass]="{'has-error': (incidentForm.get('reportedByEmail').touched || 
+                                    incidentForm.get('reportedByEmail').dirty) &&
+                                    !incidentForm.get('reportedByEmail').valid }">  >
                                 <label class="control-label" for="reportedByEmail">Reported By Email</label>
                                 <input type="text" class="form-control" id="reportedByEmail" required="required" formControlName="reportedByEmail"/>
-                                <span class="help-block" *ngIf="displayMessage.reportedByEmail">
-                                        {{displayMessage.reportedByEmail}}
+                                <span class="help-block" *ngIf="(incidentForm.get('reportedByEmail').touched || 
+                                            incidentForm.get('reportedByEmail').dirty) && 
+                                            incidentForm.get('reportedByEmail').errors">
+                                            <span *ngIf="incidentForm.get('reportedByEmail').errors.required">
+                                                Please enter reportedByEmail.
+                                            </span>
+                                            <span *ngIf="incidentForm.get('reportedByEmail').errors.pattern">
+                                                The reportedByEmail pattern has errors.
+                                            </span>
                                 </span>
                             </div>
                             <div class="form-group required col-md-8 pb-3 pt-5" >
                                 *This information is required to receive a submission confirmation email.
                             </div>
-                        </div>
+                        </div> -->
                         <!-- /Reported By Email -->
+
+                        <!-- Reported By Email -->
+                        <div class="form-row mt-4"> 
+                                <div class="form-group required col-md-4 pb-3"   >
+                                    <label class="control-label" for="reportedByEmail">Reported By Email</label>
+                                    <input type="text" class="form-control" id="reportedByEmail" required="required" formControlName="reportedByEmail"/>
+                                    <app-show-errors [control]="incidentForm.controls.reportedByEmail"></app-show-errors>
+                                </div>
+                                <div class="form-group required col-md-8 pb-3 pt-5" >
+                                    *This information is required to receive a submission confirmation email.
+                                </div>
+                            </div>
+                            <!-- /Reported By Email -->
+
+
+
+
+
+
                         <div class="form-group row">
 
                             <div class="col-sm-3">
@@ -89,11 +120,6 @@
                 </div>
             </div>
 
-        <!-- </table> -->
-        <!-- /table lustReportingTable  -->
-        <!-- <script src="/js/jquery.min.js"></script> -->
-        <!-- <script src="/js/popper.min.js"></script>
-        <script src="/js/bootstrap.min.js"></script> -->
     </body>
 
 

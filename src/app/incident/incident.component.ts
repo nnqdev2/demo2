@@ -20,10 +20,6 @@ import { SourceType } from '../models/source-type';
 import { State } from '../models/state';
 import { StreetType } from '../models/street-type';
 
-import { ValidationService } from '../services/validation.service';
-import { GenericValidator } from '../shared/generic-validator';
-
-
 
 @Component({
   selector: 'app-incident',
@@ -33,18 +29,7 @@ import { GenericValidator } from '../shared/generic-validator';
 })
 export class IncidentComponent implements OnInit {
 
-  // Use with the generic validation message class
-  displayMessage: { [key: string]: string } = {};
-  private validationMessages: { [key: string]: { [key: string]: string } };
-  private genericValidator: GenericValidator;
-
   incidentForm: FormGroup;
-
-
-
-
-
-
   confirmationTypes: ConfirmationType[] = [];
   counties: County[] = [];
   discoveryTypes: DiscoveryType[] = [];
@@ -57,30 +42,8 @@ export class IncidentComponent implements OnInit {
 
   currentDate: Date;
 
-  constructor(private incidentDataService: IncidentDataService, private formBuilder: FormBuilder, private datePipe: DatePipe) {
-    // Defines all of the validation messages for the form.
-    // These could instead be retrieved from a file or database.
-    this.validationMessages = {
-      dateReceived: {
-          required: 'dateReceived is required.',
-          minlength: 'dateReceived must be at least three characters.',
-          maxlength: 'dateReceived cannot exceed 50 characters.'
-      },
-      dateReleaseDiscovered: {
-          required: 'dateReleaseDiscovered code is required.'
-      },
-      siteType: {
-          required: 'siteType is required.'
-      },
-      reportedByEmail: {
-        required: 'reportedByEmail is required.'
-    }
-    };
+  constructor(private incidentDataService: IncidentDataService, private formBuilder: FormBuilder, private datePipe: DatePipe) {}
 
-    // Define an instance of the validator for use with this form,
-    // passing in this form's set of validation messages.
-    this.genericValidator = new GenericValidator(this.validationMessages);
-   }
 
   ngOnInit() {
     this.getSiteTypes();
@@ -99,7 +62,7 @@ export class IncidentComponent implements OnInit {
 
   createForm() {
     this.incidentForm = this.formBuilder.group({
-      reportedByEmail: ['', [Validators.required, ValidationService.emailValidator]],
+      reportedByEmail: ['', [Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+')]],
       dateReceived:  [{value: '', disabled: true,  validators: Validators.required}],
       dateReleaseDiscovered: ['', Validators.required],
       siteType:  ['', Validators.required]
@@ -114,7 +77,7 @@ export class IncidentComponent implements OnInit {
     this.incidentForm = this.formBuilder.group({
       reportedBy:  ['', Validators.required],
       reportedByPhone:  ['', Validators.required],
-      reportedByEmail: ['', [Validators.required, ValidationService.emailValidator]],
+      reportedByEmail: ['', [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+')]],
       releaseType:  ['', Validators.required],
       dateReceived:  [{value: '', disabled: true,  validators: Validators.required}],
       facilityId: ['', Validators.required],
