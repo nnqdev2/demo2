@@ -1,26 +1,9 @@
 <!DOCTYPE html>
 <html class="no-js" lang="en">
     <head>
-        <title>Bootstrap 4 Layout</title>
+        <title>LUST Incident Reporting Form</title>
         <meta http-equiv="x-ua-compatible" content="ie=edge">
 	    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<!--         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:400,800">
-        <link rel='stylesheet' href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-        <link rel="stylesheet" href="/css/bootstrap.css">
-        <link rel="stylesheet" href="/css/custom.css">
-        <link rel="stylesheet" href="/css/styles.css">
-        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> -->
-<!--         <script>
-            $( function() {
-              $( "#datepicker" ).datepicker();
-              $( "#anim" ).on( "change", function() {
-                $( "#datepicker" ).datepicker( "option", "showAnim", $( this ).val() );
-              });
-            } );
-        </script> -->
-
     </head>
 
     <body>
@@ -34,49 +17,37 @@
                     <p class="text-left">Notice (6/23/17): The OLPRR reporting tool is offline for maintenance. You have reached an alternative webpage to submit incident report information. Reporters will continue to receive an email confirming receipt and providing the incident log number. During this period DEQ responses may take up to 3 business days to complete. Please email hotinfo@deq.state.or.us with questions or problems, or call 503-229-5263 and ask to speak with the Heating Oil Tank or Leaking Underground Storage Tank Duty Officer. We apologize for any inconvenience or delays you may experience.</p>                    
                     <p class="text-left font-weight-bold pl-1" style="background-color: darkSeaGreen">Incident Information</p>
                  
-                     <!-- Form code begins -->
-                     <form [formGroup]="incidentForm" class="form" role="form" autocomplete="off" method="POST" novalidate (ngSubmit)="onSubmit()">
+                     <!-- Form incidentForm begins -->
+                     <form [formGroup]="incidentForm" class="form" role="form" autocomplete="off" method="POST" novalidate (ngSubmit)="saveIncident()">
                         <!-- Date Reported -->
                         <div class="form-group col-md-2 mt-2">                               
-                                <label for="dateReported">Date Reported</label>
-                                <input formControlName="dateReported" type="text" class="form-control" id="dateReported"   />
+                                <label for="dateReceived">Date Reported</label>
+                                <input formControlName="dateReceived" type="text" class="form-control" id="dateReceived"  />
                         </div>
                         <!-- /Date Reported -->
                         <!-- Date Released Discovered -->
-                        <div class="form-group required mt-2"
-                        [ngClass]="{'has-success':dateReleaseDiscovered.valid && (dateReleaseDiscovered.dirty||dateReleaseDiscovered.touched),
-                        'has-danger':dateReleaseDiscovered.invalid && (dateReleaseDiscovered.dirty||dateReleaseDiscovered.touched)}">                                 
-                                <label class="control-label col-12" for="dateReleaseDiscovered">Date Release Discovered</label>
-                                <input class="form-control col-md-2 " id="dateReleaseDiscovered" type="text" required="required" formControlName="dateReleaseDiscovered" />
-                        </div>
-                        <!-- /Date Released Discovered -->
-
+                        <!-- <div class="form-group required mt-2">                                 
+                            <label class="control-label col-12" for="dateReleaseDiscovered">Date Release Discovered</label>
+                            <input class="form-control col-md-2 " id="dateReleaseDiscovered" type="text" required="required" formControlName="dateReleaseDiscovered" />
+                            <control-messages [control]="incidentForm.controls.dateReleaseDiscovered"></control-messages>
+                        </div> -->
                         <div class="input-group">
-                            <input class="form-control" placeholder="111yyyy-mm-dd"
+                            <label class="control-label col-12" for="dateReleaseDiscovered">Date Release Discovered</label>
+                            <input class="form-control required mt-2 col-12" placeholder="yyyy-mm-dd"
                                    name="dp" formControlName="dateReleaseDiscovered" ngbDatepicker #d="ngbDatepicker">
                             <div class="input-group-append">
                               <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
-                                <img src="./images/calendar-year.png" style="width: 1.2rem; height: 1rem; cursor: pointer;"/>
+                                <img src="./assets/images/calendar.png" style="width: 1.2rem; height: 1rem; cursor: pointer;"/>
                               </button>
                             </div>
-                          </div>
-
-                          <div class="input-group">
-                            <input class="form-control" placeholder="222yyyy-mm-dd"
-                                   formControlName="dateReleaseDiscovered" ngbDatepicker #d="ngbDatepicker">
-                            <div class="input-group-append">
-                              <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
-                                <img src="./images/calendar-year.png" style="width: 1.2rem; height: 1rem; cursor: pointer;"/>
-                              </button>
-                            </div>
-                          </div>
-
-
-
-
-
+                            <span class="help-block" *ngIf="displayMessage.dateReleaseDiscovered">
+                                    {{displayMessage.dateReleaseDiscovered}}
+                            </span>
+                        </div>
+                        <!-- /Date Released Discovered -->
                         <!-- Site Type -->
-                        <div class="form-group required col-md-2 mt-2">
+                        <div class="form-group required col-md-2 mt-2" 
+                            [ngClass]="{'has-error': displayMessage.siteType }">
                             <label class="control-label" for="siteType">Site Type</label>
                             <select class="form-control" id="siteType" required="required" formControlName="siteType" >
                                 <option value=""></option>
@@ -85,28 +56,24 @@
                                         {{siteType.siteType}}
                             </option>
                             </select>
+                            <span class="help-block" *ngIf="displayMessage.siteType">
+                                    {{displayMessage.siteType}}
+                            </span>
                         </div>
-
                         <!-- Reported By Email -->
-                        <div class="form-row mt-4"
-                        [ngClass]="{'has-success':reportedByEmail.valid && (reportedByEmail.dirty||reportedByEmail.touched),
-                        'has-danger':reportedByEmail.errors && (reportedByEmail.dirty||reportedByEmail.touched)}">                                    
-
-                            <div class="form-group required col-md-4 pb-3">
+                        <div class="form-row mt-4"> 
+                            <div class="form-group required col-md-4 pb-3" [ngClass]="{'has-error': displayMessage.reportedByEmail}"  >
                                 <label class="control-label" for="reportedByEmail">Reported By Email</label>
                                 <input type="text" class="form-control" id="reportedByEmail" required="required" formControlName="reportedByEmail"/>
-                                <div class="form-control-feedback"
-                                    *ngIf="reportedByEmail.invalid && (reportedByEmail.dirty || reportedByEmail.touched)">
-                                    <p *ngIf="reportedByEmail.errors.required">Email is required</p>
-                                    <p *ngIf="reportedByEmail.errors.maxlength">Email is too long</p>
-                                </div>
+                                <span class="help-block" *ngIf="displayMessage.reportedByEmail">
+                                        {{displayMessage.reportedByEmail}}
+                                </span>
                             </div>
-                            <div class="form-group required col-md-8 pb-3 pt-5">
+                            <div class="form-group required col-md-8 pb-3 pt-5" >
                                 *This information is required to receive a submission confirmation email.
                             </div>
-
                         </div>
-
+                        <!-- /Reported By Email -->
                         <div class="form-group row">
 
                             <div class="col-sm-3">
@@ -118,18 +85,15 @@
                         </div>
                         <pre>incidentForm: {{ incidentForm.value | json }}</pre>
                     </form>
-                     <!-- Form code ends --> 
-                 
-
-                
+                     <!-- Form incidentForm ends --> 
                 </div>
             </div>
 
         <!-- </table> -->
         <!-- /table lustReportingTable  -->
         <!-- <script src="/js/jquery.min.js"></script> -->
-        <script src="/js/popper.min.js"></script>
-        <script src="/js/bootstrap.min.js"></script>
+        <!-- <script src="/js/popper.min.js"></script>
+        <script src="/js/bootstrap.min.js"></script> -->
     </body>
 
 

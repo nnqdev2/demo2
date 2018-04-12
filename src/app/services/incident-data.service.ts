@@ -29,7 +29,7 @@ export class IncidentDataService {
   private _quadrant = 'quadrant';
   private _releaseCauseType = 'releasecausetype';
   private _siteType = 'sitetype';
-  private _sourceType = 'source';
+  private _sourceType = 'sourcetype';
   private _state = 'state';
   private _streetType = 'streettype';
 
@@ -74,7 +74,7 @@ export class IncidentDataService {
       );
   }
   getSiteTypes(): Observable<SiteType[]> {
-    return this.http.get<SiteType[]>(this._incidentUrl + this._releaseCauseType, httpOptions)
+    return this.http.get<SiteType[]>(this._incidentUrl + this._siteType, httpOptions)
       .pipe(
         tap(data => console.log('All: ' + JSON.stringify(data))),
         catchError(this.handleError)

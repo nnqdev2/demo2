@@ -6,6 +6,8 @@ import { NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from './app.component';
 import { IncidentComponent } from './incident/incident.component';
 import { IncidentDataService } from './services/incident-data.service';
+import { ValidationService } from './services/validation.service';
+import { ControlMessagesComponent } from './control-messages/control-messages.component';
 
 
 
@@ -13,12 +15,13 @@ import { IncidentDataService } from './services/incident-data.service';
 @NgModule({
   declarations: [
     AppComponent,
-    IncidentComponent
+    IncidentComponent,
+    ControlMessagesComponent
   ],
   imports: [
     NgbModule.forRoot(), ReactiveFormsModule, HttpClientModule, BrowserModule
   ],
-  providers: [IncidentDataService],
+  providers: [IncidentDataService, ValidationService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

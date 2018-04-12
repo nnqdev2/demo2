@@ -1,6 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import 'rxjs/Rx';
+import 'rxjs/add/operator/do';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/observable/throw';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/observable/of';
+
 import {DatePipe} from '@angular/common';
 import { IncidentDataService } from '../services/incident-data.service';
 import { SiteType } from '../models/site-type';
@@ -14,6 +20,11 @@ import { SourceType } from '../models/source-type';
 import { State } from '../models/state';
 import { StreetType } from '../models/street-type';
 
+import { ValidationService } from '../services/validation.service';
+import { GenericValidator } from '../shared/generic-validator';
+
+
+
 @Component({
   selector: 'app-incident',
   templateUrl: './incident.component.html',
@@ -22,12 +33,17 @@ import { StreetType } from '../models/street-type';
 })
 export class IncidentComponent implements OnInit {
 
+  // Use with the generic validation message class
+  displayMessage: { [key: string]: string } = {};
+  private validationMessages: { [key: string]: { [key: string]: string } };
+  private genericValidator: GenericValidator;
 
   incidentForm: FormGroup;
-  dateReported: FormControl;
-  dateReleaseDiscovered: FormControl;
-  siteType: FormControl;
-  reportedByEmail: FormControl;
+
+
+
+
+
 
   confirmationTypes: ConfirmationType[] = [];
   counties: County[] = [];
@@ -41,38 +57,134 @@ export class IncidentComponent implements OnInit {
 
   currentDate: Date;
 
-  constructor(private incidentDataService: IncidentDataService, private formBuilder: FormBuilder, private datePipe: DatePipe) { }
+  constructor(private incidentDataService: IncidentDataService, private formBuilder: FormBuilder, private datePipe: DatePipe) {
+    // Defines all of the validation messages for the form.
+    // These could instead be retrieved from a file or database.
+    this.validationMessages = {
+      dateReceived: {
+          required: 'dateReceived is required.',
+          minlength: 'dateReceived must be at least three characters.',
+          maxlength: 'dateReceived cannot exceed 50 characters.'
+      },
+      dateReleaseDiscovered: {
+          required: 'dateReleaseDiscovered code is required.'
+      },
+      siteType: {
+          required: 'siteType is required.'
+      },
+      reportedByEmail: {
+        required: 'reportedByEmail is required.'
+    }
+    };
+
+    // Define an instance of the validator for use with this form,
+    // passing in this form's set of validation messages.
+    this.genericValidator = new GenericValidator(this.validationMessages);
+   }
 
   ngOnInit() {
-    this.currentDate = new Date();
     this.getSiteTypes();
-    this.createFormControls();
+    this.getConfirmationTypes();
+    this.getCounties();
+    this.getDiscoveryTypes();
+    this.getQuadrants();
+    this.getReleaseCauseTypes();
+    this.getSourceTypes();
+    this.getStates();
+    this.getStreetTypes();
     this.createForm();
-    this.incidentForm.patchValue({
-      dateReported: this.datePipe.transform(this.currentDate, 'yyyy-MM-dd')
-  });
+
   }
 
-  createFormControls() {
-    this.dateReported = new FormControl({ value: '' , disabled: true});
-    this.dateReleaseDiscovered = new FormControl('', Validators.required);
-    this.siteType = new FormControl('', Validators.required);
-    this.reportedByEmail = new FormControl('', [ Validators.required, Validators.maxLength(8)] );
-  }
 
   createForm() {
-    this.incidentForm = new FormGroup ({
-      dateReported: this.dateReported,
-      dateReleaseDiscovered: this.dateReleaseDiscovered,
-      siteType: this.siteType,
-      reportedByEmail: this.reportedByEmail
+    this.incidentForm = this.formBuilder.group({
+      reportedByEmail: ['', [Validators.required, ValidationService.emailValidator]],
+      dateReceived:  [{value: '', disabled: true,  validators: Validators.required}],
+      dateReleaseDiscovered: ['', Validators.required],
+      siteType:  ['', Validators.required]
+
+    });
+    this.incidentForm.patchValue({
+      dateReceived: this.datePipe.transform(new Date(), 'MM-dd-yyyy')
     });
   }
 
-  onSubmit() {
+   createFormZZZ() {
+    this.incidentForm = this.formBuilder.group({
+      reportedBy:  ['', Validators.required],
+      reportedByPhone:  ['', Validators.required],
+      reportedByEmail: ['', [Validators.required, ValidationService.emailValidator]],
+      releaseType:  ['', Validators.required],
+      dateReceived:  [{value: '', disabled: true,  validators: Validators.required}],
+      facilityId: ['', Validators.required],
+      siteName:  ['', Validators.required],
+      siteCounty:  ['', Validators.required],
+      streetNbr: ['', Validators.required],
+      streetQuad:  ['', Validators.required],
+      streetName:  ['', Validators.required],
+      streetType: ['', Validators.required],
+      siteAddress:  ['', Validators.required],
+      siteCity:  ['', Validators.required],
+      siteZipcode: ['', Validators.required],
+      sitePhone:  ['', Validators.required],
+      initialComment:  ['', Validators.required],
+      discoveryDate: ['', Validators.required],
+      confirmationCode:  ['', Validators.required],
+      discoveryCode:  ['', Validators.required],
+      causeCode: ['', Validators.required],
+      sourceId:  ['', Validators.required],
+      rpFirstName:  ['', Validators.required],
+      rpLastName: ['', Validators.required],
+      rpOrganization:  ['', Validators.required],
+      rpAddress:  ['', Validators.required],
+      rpAddress2: ['', Validators.required],
+      rpCity:  ['', Validators.required],
+      rpState:  ['', Validators.required],
+      rpZipcode: ['', Validators.required],
+      rpPhone:  ['', Validators.required],
+      rpEmail:  ['', Validators.required],
+      icFirstName:  ['', Validators.required],
+      icLastName: ['', Validators.required],
+      icOrganization:  ['', Validators.required],
+      icAddress:  ['', Validators.required],
+      icAddress2: ['', Validators.required],
+      icCity:  ['', Validators.required],
+      icState:  ['', Validators.required],
+      icZipcode: ['', Validators.required],
+      icPhone:  ['', Validators.required],
+      icEmail:  ['', Validators.required],
+      groundWater: [''],
+      surfaceWater: [''],
+      drinkingWater: [''],
+      soil: [''],
+      vapor: [''],
+      freeProduct: [''],
+      unleadedGas: [''],
+      leadedGas: [''],
+      misGas: [''],
+      diesel: [''],
+      wasteOil: [''],
+      heatingOil: [''],
+      lubricant: [''],
+      solvent: [''],
+      otherPet: [''],
+      chemical: [''],
+      unknown: [''],
+      mtbe: ['']
+    });
+    this.incidentForm.patchValue({
+      dateReceived: this.datePipe.transform(new Date(), 'MM-dd-yyyy')
+    });
+  }
+
+
+  saveIncident() {
     if (this.incidentForm.valid) {
       console.log('incidentForm Submitted!', this.incidentForm.value);
       this.incidentForm.reset();
+    } else {
+      console.log('incidentForm is not Valid therefore not Submitted!', this.incidentForm.value);
     }
   }
 
