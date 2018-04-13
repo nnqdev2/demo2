@@ -18,7 +18,7 @@
                     <p class="text-left font-weight-bold pl-1" style="background-color: darkSeaGreen">Incident Information</p>
                  
                      <!-- Form incidentForm begins -->
-                     <form [formGroup]="incidentForm" class="form" role="form" autocomplete="off" method="POST" novalidate (ngSubmit)="createIncident()">
+                     <form [formGroup]="incidentForm" class="form" role="form" autocomplete="off" method="POST"  (ngSubmit)="createIncident()">
                         <!-- Date Reported -->
                         <div class="form-group col-md-2 mt-2">                               
                                 <label for="dateReceived">Date Reported</label>
@@ -244,16 +244,11 @@
                                 </div>
                             </div>
                             <!-- /Responsible Party  -->
-    
 
-
-
-
-
-
-                            <!-- <div *ngIf="showInvoiceContact === true"> -->
                             <!-- Invoice Contact -->
-                            <p class=" text-left font-weight-bold pl-1" style="background-color: darkSeaGreen"  [hidden] = "showInvoiceContact">Invoice Contact</p>
+                            <div *ngIf="showInvoiceContact; then showContactInvoice"></div>
+                            <ng-template #showContactInvoice> 
+                            <p class=" text-left font-weight-bold pl-1" style="background-color: darkSeaGreen"  >Invoice Contact</p>
                         
                             <div class="form-group row">
                                 <div class="col-sm-4">
@@ -326,9 +321,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- /Responsible Party  -->
-                            <!-- </div> -->
-
+                            </ng-template>
+                            <!-- /Invoice Contact  -->
 
 
                             <p class="text-left font-weight-bold pl-1" style="background-color: darkSeaGreen">Site Assessment</p>

@@ -149,13 +149,14 @@ export class IncidentComponent implements OnInit {
 
 
   checkReleaseTypeValue() {
+    
     console.log('**********releaseType selected is', this.incidentForm.controls.releaseType.value);
-
-    if (typeof this.incidentForm.controls.releaseType.value !== 'undefined' || this.incidentForm.controls.releaseType.value === 'H') {
+    if (typeof this.incidentForm.controls.releaseType.value !== 'undefined' && this.incidentForm.controls.releaseType.value === 'H') {
       this.showInvoiceContact = false;
     } else {
       this.showInvoiceContact = true;
     }
+    console.log('**********showInvoiceContact is', this.showInvoiceContact);
   }
 
   copyResponsibleToInvoice(incidentForm: FormGroup) {
