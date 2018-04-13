@@ -1,5 +1,5 @@
 export class State {
-    StateCode: string;
-    StateName: string;
+    stateCode: string;
+    stateName: string;
     sortBy: number;
 }

@@ -41,6 +41,7 @@ export class IncidentComponent implements OnInit {
   streetTypes: StreetType[] = [];
 
   currentDate: Date;
+  showInvoiceContact = false;
 
   constructor(private incidentDataService: IncidentDataService, private formBuilder: FormBuilder, private datePipe: DatePipe) {}
 
@@ -60,7 +61,7 @@ export class IncidentComponent implements OnInit {
   }
 
 
-  createForm() {
+  createFormSSS() {
     this.incidentForm = this.formBuilder.group({
       reportedByEmail: ['', [Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+')]],
       dateReceived:  [{value: '', disabled: true,  validators: Validators.required}],
@@ -73,14 +74,14 @@ export class IncidentComponent implements OnInit {
     });
   }
 
-   createFormZZZ() {
+   createForm() {
     this.incidentForm = this.formBuilder.group({
       reportedBy:  ['', Validators.required],
       reportedByPhone:  ['', Validators.required],
       reportedByEmail: ['', [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+')]],
       releaseType:  ['', Validators.required],
       dateReceived:  [{value: '', disabled: true,  validators: Validators.required}],
-      facilityId: ['', Validators.required],
+      facilityId: [''],
       siteName:  ['', Validators.required],
       siteCounty:  ['', Validators.required],
       streetNbr: ['', Validators.required],
@@ -91,6 +92,7 @@ export class IncidentComponent implements OnInit {
       siteCity:  ['', Validators.required],
       siteZipcode: ['', Validators.required],
       sitePhone:  ['', Validators.required],
+      company:  ['', Validators.required],
       initialComment:  ['', Validators.required],
       discoveryDate: ['', Validators.required],
       confirmationCode:  ['', Validators.required],
@@ -134,7 +136,9 @@ export class IncidentComponent implements OnInit {
       otherPet: [''],
       chemical: [''],
       unknown: [''],
-      mtbe: ['']
+      mtbe: [''],
+      dateReleaseDiscovered: ['', Validators.required],
+      quadrant: ['', Validators.required]
     });
     this.incidentForm.patchValue({
       dateReceived: this.datePipe.transform(new Date(), 'MM-dd-yyyy')
@@ -142,6 +146,21 @@ export class IncidentComponent implements OnInit {
   }
 
 
+  checkReleaseTypeValue() {
+    console.log('**********releaseType selected is', this.incidentForm.controls.releaseType.value);
+
+    if (typeof this.incidentForm.controls.releaseType.value !== 'undefined' || this.incidentForm.controls.releaseType.value === 'H') {
+      this.showInvoiceContact = false;
+    } else {
+      this.showInvoiceContact = true;
+    }
+  }
+
+  copyResponsibleToInvoice() {
+    console.log('**********copyResponsibleToInvoice ');
+
+
+  }
   saveIncident() {
     if (this.incidentForm.valid) {
       console.log('incidentForm Submitted!', this.incidentForm.value);

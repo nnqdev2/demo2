@@ -24,81 +24,380 @@
                                 <label for="dateReceived">Date Reported</label>
                                 <input formControlName="dateReceived" type="text" class="form-control" id="dateReceived"  />
                         </div>
-                        <!-- /Date Reported -->
-                        <!-- Date Released Discovered -->
-                        <!-- <div class="form-group required mt-2">                                 
-                            <label class="control-label col-12" for="dateReleaseDiscovered">Date Release Discovered</label>
-                            <input class="form-control col-md-2 " id="dateReleaseDiscovered" type="text" required="required" formControlName="dateReleaseDiscovered" />
-                            <control-messages [control]="incidentForm.controls.dateReleaseDiscovered"></control-messages>
-                        </div> -->
                         <div class="input-group">
                             <label class="control-label col-12" for="dateReleaseDiscovered">Date Release Discovered</label>
                             <input class="form-control required mt-2 col-md-4" 
-                                   name="dp" formControlName="dateReleaseDiscovered" ngbDatepicker #d="ngbDatepicker">
+                                   name="dp" formControlName="dateReleaseDiscovered" id="dateReleaseDiscovered" ngbDatepicker #d="ngbDatepicker">
                             <div class="input-group-append">
                               <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
-                                <img src="./assets/images/calendar.png" style="width: 1.2rem; height: 1rem; cursor: pointer;"/>
+                                <img src="./assets/images/calendar.png" />
                               </button>
                             </div>
                         </div>
                         <!-- /Date Released Discovered -->
-                        <!-- Site Type -->
-                        <div class="form-group required col-md-2 mt-2" 
-                        [ngClass]="{'has-error': (incidentForm.get('siteType').touched || 
-                                    incidentForm.get('siteType').dirty) &&
-                                    !incidentForm.get('siteType').valid }">
-                            <label class="control-label" for="siteType">Site Type</label>
-                            <select class="form-control" id="siteType" required="required" formControlName="siteType" >
-                                <option value=""></option>
-                                <option *ngFor="let siteType of siteTypes" 
-                                        [value]="siteType.siteTypeCode" >
-                                        {{siteType.siteType}}
-                            </option>
-                            </select>
-                            <span class="help-block" *ngIf="(incidentForm.get('siteType').touched || 
-                                incidentForm.get('siteType').dirty) && 
-                                incidentForm.get('siteType').errors">
-                                <span *ngIf="incidentForm.get('siteType').errors.required">
-                            Please enter your first name.
-                            </span>
-                            </span>
+                        <!-- SiteType FacilityId -->
+                        <div class="form-row mt-4"> 
+                            <!-- Site Type -->
+                            <div class="form-group required col-md-2 mt-2">
+                                <label class="control-label" for="releaseType">Site Type</label>
+                                <select class="form-control" id="releaseType" formControlName="releaseType" (click)="checkReleaseTypeValue($event)" >
+                                    <option value=""></option>
+                                    <option *ngFor="let siteType of siteTypes" 
+                                            [value]="siteType.siteTypeCode" >
+                                            {{siteType.siteType}}
+                                    </option>
+                                    </select>    
+                                    <app-show-errors [control]="incidentForm.controls.releaseType"></app-show-errors>                            
+                            </div>
+
+                            <!-- /Site Type -->
+                            <!-- DEQ UST Facility ID  -->
+                            <div class="form-group col-md-4 mt-2"   >
+                                <label class="control-label" for="facilityId">DEQ UST Facility ID</label>
+                                <input type="text" class="form-control" id="facilityId" required="required" formControlName="facilityId"/>
+                            </div>
+                            <!-- /DEQ UST Facility ID -->
                         </div>
+                        <!-- /SiteType FacilityId -->
+                        <!-- Site Name, County -->
+                        <div class="form-row mt-4">
+                            <div class="form-group required col-sm-8 pb-3">
+                                <label class="control-label" for="siteName">Site Name</label>
+                                <input type="text" class="form-control" id="siteName" formControlName="siteName" />
+                                <app-show-errors [control]="incidentForm.controls.siteName"></app-show-errors>
+                            </div>
+                            <div class="form-group required col-sm-4 pb-3">
+                                <label  class="control-label" for="siteCounty">Site County</label>
+                                <div class="input-group">
+                                    <select class="form-control" id="siteCounty" formControlName="siteCounty" >
+                                        <option selected="selected" value=""></option>
+                                        <option *ngFor="let county of counties" 
+                                        [value]="county.countyCode" >
+                                        {{county.countyName}}
+                                        </option>
+                                    </select>
+                                    <app-show-errors [control]="incidentForm.controls.siteCounty"></app-show-errors>
+                                </div>
+                            </div>                        
+                        </div>
+                        <!-- /Site Name, County -->
+                        <!-- Street number, quadrant, street name, street type -->
+                        <div class="form-row mt-4">
+                            <div class="form-group required col-md-3 pb-3">
+                                <label class="control-label" for="streetNbr">Site Street Number</label>
+                                <input type="text" class="form-control" id="streetNbr" formControlName="streetNbr" />
+                                <app-show-errors [control]="incidentForm.controls.streetNbr"></app-show-errors>
+                            </div>
+                            <div class="form-group required col-md-3 pb-3">
+                                <label  class="control-label" for="quadrant">Quadrant</label>
+                                <div class="input-group">
+                                    <select class="form-control" id="quadrant" formControlName="quadrant">
+                                            <option selected="selected" value=""></option>
+                                            <option *ngFor="let quadrant of quadrants" 
+                                            [value]="quadrant.quadrant" >
+                                            {{quadrant.quadrant}}
+                                            </option>
+                                    </select>
+                                    <app-show-errors [control]="incidentForm.controls.quadrant"></app-show-errors>
+                                </div>
+                            </div> 
+                            <div class="form-group required col-md-3 pb-3">
+                                    <label class="control-label" for="streetName">Site Street Name </label>
+                                    <input type="text" class="form-control" id="streetName"  formControlName="streetName"/>
+                                    <app-show-errors [control]="incidentForm.controls.streetName"></app-show-errors>
+                                </div>
+                                <div class="form-group required col-md-3 pb-3">
+                                    <label  class="control-label" for="streetType">Site Street Type</label>
+                                    <div class="input-group">
+                                        <select class="form-control" id="streetType" formControlName="streetType" >
+                                                <option selected="selected" value=""></option>
+                                                <option *ngFor="let streetType of streetTypes" 
+                                                [value]="streetType.streetType" >
+                                                {{streetType.streetType}}
+                                                </option>
+                                        </select>
+                                        <app-show-errors [control]="incidentForm.controls.streetType"></app-show-errors>
+                                    </div>
+                                </div>                        
+                        </div>
+                        <!-- /Street number, quadrant, street name, street type  -->
+                        <!-- city, zip, phone -->
+                        <div class="form-row mt-4">
+                                <div class="form-group required col-md-4 pb-3">
+                                    <label class="control-label" for="siteCity">Site City</label>
+                                    <input type="text" class="form-control" id="siteCity" formControlName="siteCity" />
+                                    <app-show-errors [control]="incidentForm.controls.siteCity"></app-show-errors>
+                                </div>
+                                <div class="form-group required col-md-4 pb-3">
+                                    <label class="control-label" for="siteZipcode">Site Zip Code</label>
+                                    <input type="text" class="form-control" id="siteZipcode" formControlName="siteZipcode" />
+                                    <app-show-errors [control]="incidentForm.controls.siteZipcode"></app-show-errors>
+                                </div>
+                                <div class="form-group col-md-4 pb-3">
+                                    <label for="sitePhone">Site Phone </label>
+                                    <input type="text" class="form-control" id="sitePhone"  formControlName="sitePhone"/>
+                                </div>
+                            </div>
+                            <!-- /city, zip, phone  -->
+    
+                            <!-- Reported By, Phone, Company -->
+                            <div class="form-row mt-4">
+                                <div class="form-group required col-md-4 pb-3">
+                                    <label class="control-label" for="reportedBy">Reported By</label>
+                                    <input type="text" class="form-control" id="reportedBy" formControlName="reportedBy" />
+                                    <app-show-errors [control]="incidentForm.controls.reportedBy"></app-show-errors>
+                                </div>
+                                <div class="form-group required col-md-4 pb-3">
+                                    <label class="control-label" for="reportedByPhone">Reported By Phone</label>
+                                    <input type="text" class="form-control" id="reportedByPhone" formControlName="reportedByPhone" />
+                                    <app-show-errors [control]="incidentForm.controls.reportedByPhone"></app-show-errors>
+                                </div>
+                                <div class="form-group required col-md-4 pb-3">
+                                    <label class="control-label" for="company">Company</label>
+                                    <input type="text" class="form-control" id="company" formControlName="company" />
+                                    <app-show-errors [control]="incidentForm.controls.company"></app-show-errors>
+                                </div>
+                            </div>
+                            <!-- /Reported By, Phone, Company  -->
+
+
+
+
+                            <!-- Responsible Party -->
+                            <p class="text-left font-weight-bold pl-1" style="background-color: darkSeaGreen">Responsible Party</p>
+                        
+                            
+                            <div class="form-row mt-4">
+                                <div class="form-group required col-md-6 pb-3">
+                                    <label class="control-label" for="rpFirstName">Responsible Party First Name</label>
+                                    <input type="text" class="form-control" id="rpFirstName" formControlName="rpFirstName" />
+                                    <app-show-errors [control]="incidentForm.controls.rpFirstName"></app-show-errors>
+                                </div>
+                                <div class="form-group required col-md-6 pb-3">
+                                    <label class="control-label" for="rpLastName">Responsible Party Last Name</label>
+                                    <input type="text" class="form-control" id="rpLastName" formControlName="rpLastName" />
+                                    <app-show-errors [control]="incidentForm.controls.rpLastName"></app-show-errors>
+                                </div>
+                            </div>
+                            <div class="form-row mt-4">
+                                <div class="form-group required col-md-12 pb-3">
+                                    <label class="control-label" for="rpOrganization">Organization</label>
+                                    <input type="text" class="form-control" id="rpOrganization" formControlName="rpOrganization" />
+                                    <app-show-errors [control]="incidentForm.controls.rpOrganization"></app-show-errors>
+                                </div>
+                            </div>
+                            <div class="form-row mt-4">
+                                <div class="form-group required col-md-6 pb-3">
+                                    <label class="control-label" for="rpAddress">Address</label>
+                                    <input type="text" class="form-control" id="rpAddress" formControlName="rpOrganization"  />
+                                    <app-show-errors [control]="incidentForm.controls.rpAddress"></app-show-errors>
+                                </div>
+                                <div class="form-group required col-md-6 pb-3">
+                                    <label class="control-label" for="rpPhone">Phone</label>
+                                    <input type="text" class="form-control" id="rpPhone" formControlName="rpPhone" />
+                                    <app-show-errors [control]="incidentForm.controls.rpPhone"></app-show-errors>
+                                </div>
+                            </div>
+                            <div class="form-row mt-4">
+                                <div class="form-group required col-md-6 pb-3">
+                                    <label class="control-label" for="rpCity">City</label>
+                                    <input type="text" class="form-control" id="rpCity" formControlName="rpCity"  />
+                                    <app-show-errors [control]="incidentForm.controls.rpCity"></app-show-errors>
+                                </div>
+                                <div class="form-group col-md-6 pb-3">
+                                    <label for="rpEmail">Email</label>
+                                    <input type="text" class="form-control" id="rpEmail" formControlName="rpEmail"  />
+                                </div>
+                            </div>
+                            <div class="form-row mt-4">
+                                <div class="form-group required col-md-12 pb-3">
+                                    <label  class="control-label" for="rpState">State</label>
+                                    <div class="input-group">
+                                        <select class="form-control" id="rpState"  formControlName="rpState" >
+                                                <option selected="selected" value=""></option>
+                                                <option selected="selected" value=""></option>
+                                                <option *ngFor="let state of states" 
+                                                [value]="state.stateCode" >
+                                                {{state.stateName}}
+                                                </option>                                               
+                                        </select>
+                                    </div>
+                                    <app-show-errors [control]="incidentForm.controls.rpState"></app-show-errors>
+                                </div> 
+                                <div class="form-row mt-4">
+                                    <div class="form-group required col-xs-12 pb-3">
+                                        <label class="control-label" for="rpZipcode">Zip Code</label>
+                                        <input type="text" class="form-control" id="rpZipcode" formControlName="rpZipcode"/>
+                                        <app-show-errors [control]="incidentForm.controls.rpZipcode"></app-show-errors>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /Responsible Party  -->
+    
+
+
+
+
+
+
+                            <!-- <div *ngIf="showInvoiceContact === true"> -->
+                            <!-- Invoice Contact -->
+                            <p class=" hidden text-left font-weight-bold pl-1" style="background-color: darkSeaGreen">Invoice Contact</p>
+                        
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <button type="button"   class=" btn btn-md btn-block" (click)="copyResponsibleToInvoice()">Copy Responsible info to here</button>
+                                </div>
+                            </div>
+                       
+                       
+                            <div class="form-row mt-4">
+                                <div class="form-group required col-md-6 pb-3">
+                                    <label class="control-label" for="icFirstName">First Name</label>
+                                    <input type="text" class="form-control" id="icFirstName" formControlName="icFirstName" />
+                                    <app-show-errors [control]="incidentForm.controls.icFirstName"></app-show-errors>
+                                </div>
+                                <div class="form-group required col-md-6 pb-3">
+                                    <label class="control-label" for="icLastName">Last Name</label>
+                                    <input type="text" class="form-control" id="icLastName" formControlName="icLastName" />
+                                    <app-show-errors [control]="incidentForm.controls.icLastName"></app-show-errors>
+                                </div>
+                            </div>
+                            <div class="form-row mt-4">
+                                <div class="form-group required col-md-12 pb-3">
+                                    <label class="control-label" for="icOrganization">Organization</label>
+                                    <input type="text" class="form-control" id="icOrganization" formControlName="icOrganization" />
+                                    <app-show-errors [control]="incidentForm.controls.icOrganization"></app-show-errors>
+                                </div>
+                            </div>
+                            <div class="form-row mt-4">
+                                <div class="form-group required col-md-6 pb-3">
+                                    <label class="control-label" for="icAddress">Address</label>
+                                    <input type="text" class="form-control" id="icAddress" formControlName="icAddress"  />
+                                    <app-show-errors [control]="incidentForm.controls.rpAddress"></app-show-errors>
+                                </div>
+                                <div class="form-group required col-md-6 pb-3">
+                                    <label class="control-label" for="rpPhone">Phone</label>
+                                    <input type="text" class="form-control" id="rpPhone" formControlName="rpPhone" />
+                                    <app-show-errors [control]="incidentForm.controls.icAddress"></app-show-errors>
+                                </div>
+                            </div>
+                            <div class="form-row mt-4">
+                                <div class="form-group required col-md-6 pb-3">
+                                    <label class="control-label" for="icCity">City</label>
+                                    <input type="text" class="form-control" id="icCity" formControlName="icCity"  />
+                                    <app-show-errors [control]="incidentForm.controls.icCity"></app-show-errors>
+                                </div>
+                                <div class="form-group col-md-6 pb-3">
+                                    <label for="icEmail">Email</label>
+                                    <input type="text" class="form-control" id="icEmail" formControlName="icEmail"  />
+                                </div>
+                            </div>
+                            <div class="form-row mt-4">
+                                <div class="form-group required col-md-12 pb-3">
+                                    <label  class="control-label" for="icState">State</label>
+                                    <div class="input-group">
+                                        <select class="form-control" id="icState"  formControlName="icState" >
+                                                <option selected="selected" value=""></option>
+                                                <option selected="selected" value=""></option>
+                                                <option *ngFor="let state of states" 
+                                                [value]="state.stateCode" >
+                                                {{state.stateName}}
+                                                </option>                                               
+                                        </select>
+                                    </div>
+                                    <app-show-errors [control]="incidentForm.controls.icState"></app-show-errors>
+                                </div> 
+                                <div class="form-row mt-4">
+                                    <div class="form-group required col-xs-12 pb-3">
+                                        <label class="control-label" for="icZipcode">Zip Code</label>
+                                        <input type="text" class="form-control" id="icZipcode" formControlName="icZipcode"/>
+                                        <app-show-errors [control]="incidentForm.controls.icZipcode"></app-show-errors>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /Responsible Party  -->
+                            <!-- </div> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+                            <!-- Reported By Email -->
+                            <div class="form-row mt-4">
+                                <div class="form-group required col-md-4 pb-3">
+                                    <label class="control-label" for="reportedByEmail">Reported By Email</label>
+                                    <input type="text" class="form-control" id="reportedByEmail" required="required" />
+                                </div>
+                                <div class="form-group required col-md-8 pb-3 pt-5">
+                                    *This information is required to receive a submission confirmation email.
+                                </div>
+                            </div>
+                            <!-- /Reported By Email  -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                         <!-- Reported By Email -->
-                        <!-- <div class="form-row mt-4"> 
-                            <div class="form-group required col-md-4 pb-3"   [ngClass]="{'has-error': (incidentForm.get('reportedByEmail').touched || 
-                                    incidentForm.get('reportedByEmail').dirty) &&
-                                    !incidentForm.get('reportedByEmail').valid }">  >
+                        <div class="form-row mt-4"> 
+                            <div class="form-group required col-md-4 pb-3"   >
                                 <label class="control-label" for="reportedByEmail">Reported By Email</label>
                                 <input type="text" class="form-control" id="reportedByEmail" required="required" formControlName="reportedByEmail"/>
-                                <span class="help-block" *ngIf="(incidentForm.get('reportedByEmail').touched || 
-                                            incidentForm.get('reportedByEmail').dirty) && 
-                                            incidentForm.get('reportedByEmail').errors">
-                                            <span *ngIf="incidentForm.get('reportedByEmail').errors.required">
-                                                Please enter reportedByEmail.
-                                            </span>
-                                            <span *ngIf="incidentForm.get('reportedByEmail').errors.pattern">
-                                                The reportedByEmail pattern has errors.
-                                            </span>
-                                </span>
+                                <app-show-errors [control]="incidentForm.controls.reportedByEmail"></app-show-errors>
                             </div>
                             <div class="form-group required col-md-8 pb-3 pt-5" >
                                 *This information is required to receive a submission confirmation email.
                             </div>
-                        </div> -->
+                        </div>
                         <!-- /Reported By Email -->
-
-                        <!-- Reported By Email -->
-                        <div class="form-row mt-4"> 
-                                <div class="form-group required col-md-4 pb-3"   >
-                                    <label class="control-label" for="reportedByEmail">Reported By Email</label>
-                                    <input type="text" class="form-control" id="reportedByEmail" required="required" formControlName="reportedByEmail"/>
-                                    <app-show-errors [control]="incidentForm.controls.reportedByEmail"></app-show-errors>
-                                </div>
-                                <div class="form-group required col-md-8 pb-3 pt-5" >
-                                    *This information is required to receive a submission confirmation email.
-                                </div>
-                            </div>
-                            <!-- /Reported By Email -->
 
 
 
