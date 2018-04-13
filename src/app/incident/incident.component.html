@@ -54,7 +54,7 @@
                             <!-- DEQ UST Facility ID  -->
                             <div class="form-group col-md-4 mt-2"   >
                                 <label class="control-label" for="facilityId">DEQ UST Facility ID</label>
-                                <input type="text" class="form-control" id="facilityId" required="required" formControlName="facilityId"/>
+                                <input type="text" class="form-control" id="facilityId" formControlName="facilityId"/>
                             </div>
                             <!-- /DEQ UST Facility ID -->
                         </div>
@@ -89,16 +89,16 @@
                                 <app-show-errors [control]="incidentForm.controls.streetNbr"></app-show-errors>
                             </div>
                             <div class="form-group required col-md-3 pb-3">
-                                <label  class="control-label" for="quadrant">Quadrant</label>
+                                <label  class="control-label" for="streetQuad">Quadrant</label>
                                 <div class="input-group">
-                                    <select class="form-control" id="quadrant" formControlName="quadrant">
+                                    <select class="form-control" id="streetQuad" formControlName="streetQuad">
                                             <option selected="selected" value=""></option>
                                             <option *ngFor="let quadrant of quadrants" 
                                             [value]="quadrant.quadrant" >
                                             {{quadrant.quadrant}}
                                             </option>
                                     </select>
-                                    <app-show-errors [control]="incidentForm.controls.quadrant"></app-show-errors>
+                                    <app-show-errors [control]="incidentForm.controls.streetQuad"></app-show-errors>
                                 </div>
                             </div> 
                             <div class="form-group required col-md-3 pb-3">
@@ -163,7 +163,7 @@
                             <div class="form-row mt-4"> 
                                 <div class="form-group required col-md-4 pb-3"   >
                                     <label class="control-label" for="reportedByEmail">Reported By Email</label>
-                                    <input type="text" class="form-control" id="reportedByEmail" required="required" formControlName="reportedByEmail"/>
+                                    <input type="text" class="form-control" id="reportedByEmail"  formControlName="reportedByEmail"/>
                                     <app-show-errors [control]="incidentForm.controls.reportedByEmail"></app-show-errors>
                                 </div>
                                 <div class="form-group required col-md-8 pb-3 pt-5" >
@@ -502,6 +502,7 @@
 
                             <div class="col-sm-3">
                                 <button type="submit" class="btn btn-success btn-md btn-block" [disabled]="!incidentForm.valid">Submit</button>
+                                <!-- <button type="submit" class="btn btn-success btn-md btn-block" >Submit</button> -->
                             </div>
                             <div class="col-sm-3">
                                 <button type="reset" class="btn btn-default btn-md btn-block">Clear All Fields</button>

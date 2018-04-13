@@ -63,20 +63,7 @@ export class IncidentComponent implements OnInit {
   }
 
 
-  createFormSSS() {
-    this.incidentForm = this.formBuilder.group({
-      reportedByEmail: ['', [Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+')]],
-      dateReceived:  [{value: '', disabled: true,  validators: Validators.required}],
-      dateReleaseDiscovered: ['', Validators.required],
-      siteType:  ['', Validators.required]
-
-    });
-    this.incidentForm.patchValue({
-      dateReceived: this.datePipe.transform(new Date(), 'MM-dd-yyyy')
-    });
-  }
-
-   createForm() {
+ createForm() {
     this.incidentForm = this.formBuilder.group({
       reportedBy:  ['', Validators.required],
       reportedByPhone:  ['', Validators.required],
@@ -90,7 +77,7 @@ export class IncidentComponent implements OnInit {
       streetQuad:  ['', Validators.required],
       streetName:  ['', Validators.required],
       streetType: ['', Validators.required],
-      siteAddress:  ['', Validators.required],
+      // siteAddress:  ['', Validators.required],
       siteCity:  ['', Validators.required],
       siteZipcode: ['', Validators.required],
       sitePhone:  [''],
@@ -138,14 +125,90 @@ export class IncidentComponent implements OnInit {
       otherPet: [''],
       chemical: [''],
       unknown: [''],
-      mtbe: [''],
+      mtbe: ['']
       // dateReleaseDiscovered: ['', Validators.required],
-      quadrant: ['', Validators.required]
+      // quadrant: ['', Validators.required]
     });
     this.incidentForm.patchValue({
       dateReceived: this.datePipe.transform(new Date(), 'MM-dd-yyyy')
     });
   }
+
+
+  createFormSAVE() {
+    this.incidentForm = this.formBuilder.group({
+      reportedBy:  ['', Validators.required],
+      reportedByPhone:  ['', Validators.required],
+      reportedByEmail: ['', [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+')]],
+      releaseType:  ['', Validators.required],
+      dateReceived:  [{value: '', disabled: true,  validators: Validators.required}],
+      facilityId: [''],
+      siteName:  ['', Validators.required],
+      siteCounty:  ['', Validators.required],
+      streetNbr: ['', Validators.required],
+      streetQuad:  ['', Validators.required],
+      streetName:  ['', Validators.required],
+      streetType: ['', Validators.required],
+      // siteAddress:  [''],
+      siteCity:  ['', Validators.required],
+      siteZipcode: ['', Validators.required],
+      sitePhone:  [''],
+      company:  ['', Validators.required],
+      initialComment:  ['', Validators.maxLength(704)],
+      discoveryDate: ['', Validators.required],
+      confirmationCode:  ['', Validators.required],
+      discoveryCode:  ['', Validators.required],
+      causeCode: ['', Validators.required],
+      sourceId:  ['', Validators.required],
+      rpFirstName:  ['', Validators.required],
+      rpLastName: ['', Validators.required],
+      rpOrganization:  ['', Validators.required],
+      rpAddress:  [''],
+      rpAddress2: [''],
+      rpCity:  ['', Validators.required],
+      rpState:  ['', Validators.required],
+      rpZipcode: ['', Validators.required],
+      rpPhone:  ['', Validators.required],
+      rpEmail:  [''],
+      icFirstName:  ['', Validators.required],
+      icLastName: ['', Validators.required],
+      icOrganization:  ['', Validators.required],
+      icAddress:  [''],
+      icAddress2: [''],
+      icCity:  ['', Validators.required],
+      icState:  ['', Validators.required],
+      icZipcode: ['', Validators.required],
+      icPhone:  ['', Validators.required],
+      icEmail:  [''],
+      groundWater: [''],
+      surfaceWater: [''],
+      drinkingWater: [''],
+      soil: [''],
+      vapor: [''],
+      freeProduct: [''],
+      unleadedGas: [''],
+      leadedGas: [''],
+      misGas: [''],
+      diesel: [''],
+      wasteOil: [''],
+      heatingOil: [''],
+      lubricant: [''],
+      solvent: [''],
+      otherPet: [''],
+      chemical: [''],
+      unknown: [''],
+      mtbe: ['']
+      // dateReleaseDiscovered: ['', Validators.required],
+      // quadrant: ['', Validators.required]
+    });
+    this.incidentForm.patchValue({
+      dateReceived: this.datePipe.transform(new Date(), 'MM-dd-yyyy')
+    });
+  }
+
+
+
+
 
 
   setShowContactInvoice() {
@@ -171,6 +234,8 @@ export class IncidentComponent implements OnInit {
   }
 
   createIncident(): void {
+    const errors: any[] = this.findInvalidControls();
+
     if (this.incidentForm.valid) {
       console.log('incidentForm Submitted!', this.incidentForm.value);
     } else {
@@ -304,4 +369,16 @@ export class IncidentComponent implements OnInit {
   transformDate(date) {
     this.datePipe.transform(date, 'yyyy-MM-dd');
   }
+
+  public findInvalidControls() {
+    const invalid = [];
+    const controls = this.incidentForm.controls;
+    for (const name in controls) {
+        if (controls[name].invalid) {
+            console.log('********** offending name ===>' + name);
+            invalid.push(name);
+        }
+    }
+    return invalid;
+}
 }
