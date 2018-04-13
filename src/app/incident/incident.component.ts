@@ -93,9 +93,9 @@ export class IncidentComponent implements OnInit {
       siteAddress:  ['', Validators.required],
       siteCity:  ['', Validators.required],
       siteZipcode: ['', Validators.required],
-      sitePhone:  ['', Validators.required],
+      sitePhone:  [''],
       company:  ['', Validators.required],
-      initialComment:  ['', Validators.required],
+      initialComment:  ['', Validators.maxLength(704)],
       discoveryDate: ['', Validators.required],
       confirmationCode:  ['', Validators.required],
       discoveryCode:  ['', Validators.required],
@@ -104,23 +104,23 @@ export class IncidentComponent implements OnInit {
       rpFirstName:  ['', Validators.required],
       rpLastName: ['', Validators.required],
       rpOrganization:  ['', Validators.required],
-      rpAddress:  ['', Validators.required],
-      rpAddress2: ['', Validators.required],
+      rpAddress:  [''],
+      rpAddress2: [''],
       rpCity:  ['', Validators.required],
       rpState:  ['', Validators.required],
       rpZipcode: ['', Validators.required],
       rpPhone:  ['', Validators.required],
-      rpEmail:  ['', Validators.required],
+      rpEmail:  [''],
       icFirstName:  ['', Validators.required],
       icLastName: ['', Validators.required],
       icOrganization:  ['', Validators.required],
-      icAddress:  ['', Validators.required],
-      icAddress2: ['', Validators.required],
+      icAddress:  [''],
+      icAddress2: [''],
       icCity:  ['', Validators.required],
       icState:  ['', Validators.required],
       icZipcode: ['', Validators.required],
       icPhone:  ['', Validators.required],
-      icEmail:  ['', Validators.required],
+      icEmail:  [''],
       groundWater: [''],
       surfaceWater: [''],
       drinkingWater: [''],
@@ -139,7 +139,7 @@ export class IncidentComponent implements OnInit {
       chemical: [''],
       unknown: [''],
       mtbe: [''],
-      dateReleaseDiscovered: ['', Validators.required],
+      // dateReleaseDiscovered: ['', Validators.required],
       quadrant: ['', Validators.required]
     });
     this.incidentForm.patchValue({
@@ -148,28 +148,26 @@ export class IncidentComponent implements OnInit {
   }
 
 
-  checkReleaseTypeValue() {
-    
-    console.log('**********releaseType selected is', this.incidentForm.controls.releaseType.value);
-    if (typeof this.incidentForm.controls.releaseType.value !== 'undefined' && this.incidentForm.controls.releaseType.value === 'H') {
-      this.showInvoiceContact = false;
-    } else {
+  setShowContactInvoice() {
+    if (typeof this.incidentForm.controls.releaseType.value !== 'undefined' 
+    && (this.incidentForm.controls.releaseType.value === 'R' || this.incidentForm.controls.releaseType.value === 'U')) {
       this.showInvoiceContact = true;
+    } else {
+      this.showInvoiceContact = false;
     }
-    console.log('**********showInvoiceContact is', this.showInvoiceContact);
   }
 
-  copyResponsibleToInvoice(incidentForm: FormGroup) {
-    console.log('**********copyResponsibleToInvoice ' + incidentForm.controls.icFirstName.value + ' HELLO??????????????????');
-    incidentForm.controls.icFirstName = incidentForm.controls.rpFirstName.value;
-    incidentForm.controls.icLastName = incidentForm.controls.rpLastName.value;
-    incidentForm.controls.icOrganization = incidentForm.controls.rpOrganization.value;
-    incidentForm.controls.icAddress = incidentForm.controls.rpAddress.value;
-    incidentForm.controls.icPhone = incidentForm.controls.rpPhone.value;
-    incidentForm.controls.icCity = incidentForm.controls.rpCity.value;
-    incidentForm.controls.icEmail = incidentForm.controls.rpEmail.value;
-    incidentForm.controls.icState = incidentForm.controls.rpState.value;
-    incidentForm.controls.icZipcode = incidentForm.controls.rpZipcode.value;
+
+  copyResponsibleToInvoice() {
+    this.incidentForm.controls.icFirstName.setValue(this.incidentForm.controls.rpFirstName.value);
+    this.incidentForm.controls.icLastName.setValue(this.incidentForm.controls.rpLastName.value);
+    this.incidentForm.controls.icOrganization.setValue(this.incidentForm.controls.rpOrganization.value);
+    this.incidentForm.controls.icAddress.setValue(this.incidentForm.controls.rpAddress.value);
+    this.incidentForm.controls.icPhone.setValue(this.incidentForm.controls.rpPhone.value);
+    this.incidentForm.controls.icCity.setValue(this.incidentForm.controls.rpCity.value);
+    this.incidentForm.controls.icEmail.setValue(this.incidentForm.controls.rpEmail.value);
+    this.incidentForm.controls.icState.setValue(this.incidentForm.controls.rpState.value);
+    this.incidentForm.controls.icZipcode.setValue(this.incidentForm.controls.rpZipcode.value);
   }
 
   createIncident(): void {

@@ -27,7 +27,7 @@
                         <div class="input-group">
                             <label class="control-label col-12" for="dateReleaseDiscovered">Date Release Discovered</label>
                             <input class="form-control required mt-2 col-md-4" 
-                                   name="dp" formControlName="dateReleaseDiscovered" id="dateReleaseDiscovered" ngbDatepicker #d="ngbDatepicker">
+                                   name="dp" formControlName="discoveryDate" id="dateReleaseDiscovered" ngbDatepicker #d="ngbDatepicker">
                             <div class="input-group-append">
                               <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
                                 <img src="./assets/images/calendar.png" />
@@ -40,7 +40,7 @@
                             <!-- Site Type -->
                             <div class="form-group required col-md-2 mt-2">
                                 <label class="control-label" for="releaseType">Site Type</label>
-                                <select class="form-control" id="releaseType" formControlName="releaseType" (click)="checkReleaseTypeValue($event)" >
+                                <select class="form-control" id="releaseType" formControlName="releaseType" (click)="setShowContactInvoice()" >
                                     <option value=""></option>
                                     <option *ngFor="let siteType of siteTypes" 
                                             [value]="siteType.siteTypeCode" >
@@ -498,9 +498,6 @@
                                 </div>    
                             </div>
                             <!-- /Site Comments  -->
-
-
-
                         <div class="form-group row">
 
                             <div class="col-sm-3">
