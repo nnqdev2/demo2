@@ -19,6 +19,7 @@ import { ReleaseCauseType } from '../models/release-cause-type';
 import { SourceType } from '../models/source-type';
 import { State } from '../models/state';
 import { StreetType } from '../models/street-type';
+import { Incident } from '../models/incident';
 
 
 @Component({
@@ -29,6 +30,7 @@ import { StreetType } from '../models/street-type';
 })
 export class IncidentComponent implements OnInit {
 
+  incident: Incident;
   incidentForm: FormGroup;
   confirmationTypes: ConfirmationType[] = [];
   counties: County[] = [];
@@ -42,6 +44,7 @@ export class IncidentComponent implements OnInit {
 
   currentDate: Date;
   showInvoiceContact = false;
+  errorMessage: string;
 
   constructor(private incidentDataService: IncidentDataService, private formBuilder: FormBuilder, private datePipe: DatePipe) {}
 
@@ -57,7 +60,6 @@ export class IncidentComponent implements OnInit {
     this.getStates();
     this.getStreetTypes();
     this.createForm();
-
   }
 
 
@@ -156,18 +158,43 @@ export class IncidentComponent implements OnInit {
     }
   }
 
-  copyResponsibleToInvoice() {
-    console.log('**********copyResponsibleToInvoice ');
-
-
+  copyResponsibleToInvoice(incidentForm: FormGroup) {
+    console.log('**********copyResponsibleToInvoice ' + incidentForm.controls.icFirstName.value + ' HELLO??????????????????');
+    incidentForm.controls.icFirstName = incidentForm.controls.rpFirstName.value;
+    incidentForm.controls.icLastName = incidentForm.controls.rpLastName.value;
+    incidentForm.controls.icOrganization = incidentForm.controls.rpOrganization.value;
+    incidentForm.controls.icAddress = incidentForm.controls.rpAddress.value;
+    incidentForm.controls.icPhone = incidentForm.controls.rpPhone.value;
+    incidentForm.controls.icCity = incidentForm.controls.rpCity.value;
+    incidentForm.controls.icEmail = incidentForm.controls.rpEmail.value;
+    incidentForm.controls.icState = incidentForm.controls.rpState.value;
+    incidentForm.controls.icZipcode = incidentForm.controls.rpZipcode.value;
   }
-  saveIncident() {
+
+  createIncident(): void {
     if (this.incidentForm.valid) {
       console.log('incidentForm Submitted!', this.incidentForm.value);
-      this.incidentForm.reset();
     } else {
       console.log('incidentForm is not Valid therefore not Submitted!', this.incidentForm.value);
     }
+
+    if (this.incidentForm.dirty && this.incidentForm.valid) {
+      // Copy the form values over the product object values
+      let p = Object.assign({}, this.incident, this.incidentForm.value);
+
+      this.incidentDataService.createIncident(p)
+          .subscribe(
+              () => this.onCreateComplete(),
+              (error: any) => this.errorMessage = <any>error
+          );
+  } else if (!this.incidentForm.dirty) {
+      this.onCreateComplete();
+  }
+  }
+  onCreateComplete(): void {
+    // Reset the form to clear the flags
+    console.log('ok did it!!!!');
+    this.incidentForm.reset();
   }
 
   getConfirmationTypes() {

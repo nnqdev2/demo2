@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { RouterModule} from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { NgbModule} from '@ng-bootstrap/ng-bootstrap';
@@ -18,7 +19,11 @@ import { ShowErrorsComponent } from './show-errors/show-errors.component';
     ShowErrorsComponent
   ],
   imports: [
-    NgbModule.forRoot(), ReactiveFormsModule, HttpClientModule, BrowserModule
+    NgbModule.forRoot()
+    , RouterModule.forRoot([
+      { path: 'olprr', component: IncidentComponent }
+    ])
+    , ReactiveFormsModule, HttpClientModule, BrowserModule
   ],
   providers: [IncidentDataService],
   bootstrap: [AppComponent]

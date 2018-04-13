@@ -18,7 +18,7 @@
                     <p class="text-left font-weight-bold pl-1" style="background-color: darkSeaGreen">Incident Information</p>
                  
                      <!-- Form incidentForm begins -->
-                     <form [formGroup]="incidentForm" class="form" role="form" autocomplete="off" method="POST" novalidate (ngSubmit)="saveIncident(incidentForm)">
+                     <form [formGroup]="incidentForm" class="form" role="form" autocomplete="off" method="POST" novalidate (ngSubmit)="createIncident()">
                         <!-- Date Reported -->
                         <div class="form-group col-md-2 mt-2">                               
                                 <label for="dateReceived">Date Reported</label>
@@ -159,7 +159,18 @@
                                 </div>
                             </div>
                             <!-- /Reported By, Phone, Company  -->
-
+                            <!-- Reported By Email -->
+                            <div class="form-row mt-4"> 
+                                <div class="form-group required col-md-4 pb-3"   >
+                                    <label class="control-label" for="reportedByEmail">Reported By Email</label>
+                                    <input type="text" class="form-control" id="reportedByEmail" required="required" formControlName="reportedByEmail"/>
+                                    <app-show-errors [control]="incidentForm.controls.reportedByEmail"></app-show-errors>
+                                </div>
+                                <div class="form-group required col-md-8 pb-3 pt-5" >
+                                    *This information is required to receive a submission confirmation email.
+                                </div>
+                            </div>
+                            <!-- /Reported By Email -->
 
 
 
@@ -242,11 +253,11 @@
 
                             <!-- <div *ngIf="showInvoiceContact === true"> -->
                             <!-- Invoice Contact -->
-                            <p class=" hidden text-left font-weight-bold pl-1" style="background-color: darkSeaGreen">Invoice Contact</p>
+                            <p class=" text-left font-weight-bold pl-1" style="background-color: darkSeaGreen"  [hidden] = "showInvoiceContact">Invoice Contact</p>
                         
                             <div class="form-group row">
-                                <div class="col-sm-3">
-                                    <button type="button"   class=" btn btn-md btn-block" (click)="copyResponsibleToInvoice()">Copy Responsible info to here</button>
+                                <div class="col-sm-4">
+                                    <button type="button"   class=" btn btn-md btn-block" (click)="copyResponsibleToInvoice(incidentForm)">Copy Responsible Party information</button>
                                 </div>
                             </div>
                        
@@ -299,7 +310,6 @@
                                     <div class="input-group">
                                         <select class="form-control" id="icState"  formControlName="icState" >
                                                 <option selected="selected" value=""></option>
-                                                <option selected="selected" value=""></option>
                                                 <option *ngFor="let state of states" 
                                                 [value]="state.stateCode" >
                                                 {{state.stateName}}
@@ -321,86 +331,179 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-                            <!-- Reported By Email -->
+                            <p class="text-left font-weight-bold pl-1" style="background-color: darkSeaGreen">Site Assessment</p>
+                            <!-- site assessment -->
                             <div class="form-row mt-4">
-                                <div class="form-group required col-md-4 pb-3">
-                                    <label class="control-label" for="reportedByEmail">Reported By Email</label>
-                                    <input type="text" class="form-control" id="reportedByEmail" required="required" />
+                                <div class="form-group required col-md-3 pb-3">
+                                    <label  class="control-label" for="confirmationCode">Confirmation</label>
+                                    <div class="input-group">
+                                        <select class="form-control" id="confirmationCode"  formControlName="confirmationCode">
+                                                <option selected="selected" value=""></option>
+                                                <option *ngFor="let confirmationType of confirmationTypes" 
+                                                [value]="confirmationType.confirmationCode" >
+                                                {{confirmationType.confirmationDescription}}
+                                                </option>     
+                                            </select>  
+                                    </div>
+                                    <app-show-errors [control]="incidentForm.controls.confirmationCode"></app-show-errors>
+                                </div> 
+                                <div class="form-group required col-md-3 pb-3">
+                                    <label  class="control-label" for="discoveryCode">Discovery</label>
+                                    <div class="input-group">
+                                        <select class="form-control" id="discoveryCode" formControlName="discoveryCode" >
+                                                <option selected="selected" value=""></option>
+                                                <option *ngFor="let discoveryType of discoveryTypes" 
+                                                [value]="discoveryType.discoveryCode" >
+                                                {{discoveryType.discoveryDescription}}
+                                                </option>     
+                                            </select>  
+                                    </div>
+                                    <app-show-errors [control]="incidentForm.controls.discoveryCode"></app-show-errors>
+                                </div>   
+                                <div class="form-group required col-md-3 pb-3">
+                                    <label  class="control-label" for="releaseCauseCode">Cause</label>
+                                    <div class="input-group">
+                                        <select class="form-control" id="releaseCauseCode" formControlName="causeCode">
+                                                <option selected="selected" value=""></option>
+                                                <option *ngFor="let releaseCauseType of releaseCauseTypes" 
+                                                [value]="releaseCauseType.releaseCauseCode" >
+                                                {{releaseCauseType.releaseCauseDescription}}
+                                                </option>     
+                                            </select>  
+                                    </div>
+                                    <app-show-errors [control]="incidentForm.controls.causeCode"></app-show-errors>
+                                </div>    
+                                <div class="form-group required col-md-3 pb-3">
+                                    <label  class="control-label" for="sourceId">Source</label>
+                                    <div class="input-group">
+                                        <select class="form-control" id="sourceId"  formControlName="sourceId">
+                                                <option selected="selected" value=""></option>
+                                                <option *ngFor="let sourceType of sourceTypes" 
+                                                [value]="sourceType.sourceTypeId" >
+                                                {{sourceType.releaseSourceDescription}}
+                                                </option>     
+                                            </select>  
+                                    </div>
+                                    <app-show-errors [control]="incidentForm.controls.sourceId"></app-show-errors>
+                                </div>                      
+                            </div>
+                            <!-- /site assessment  -->
+
+
+
+                            <p class="text-left font-weight-bold pl-1" style="background-color: darkSeaGreen">Contaminants</p>
+                            <div class="form-group required row">
+                                    <label class="control-label col-lg-12">(select one or more)</label>
                                 </div>
-                                <div class="form-group required col-md-8 pb-3 pt-5">
-                                    *This information is required to receive a submission confirmation email.
+                                <div class="form-group row">
+                                    <div class="col-sm-3">
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="checkbox" formControlName="heatingOil"> Heating Oil   
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="checkbox" formControlName="unleadedGas">Unleaded Gasoline
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="checkbox" formControlName="leadedGas">Leaded Gasoline
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="checkbox" formControlName="misGas">Misc. Gasoline
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                            <div class="form-check">
+                                                <label class="form-check-label">
+                                                    <input class="form-check-input" type="checkbox" formControlName="diesel">Diesel (Motor Fuel)
+                                                </label>
+                                            </div>
+                                        </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="checkbox" formControlName="wasteOil">Waste Oil
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+    
+    
+    
+    
+    
+    
+    
+                            <p class="text-left font-weight-bold pl-1" style="background-color: darkSeaGreen">Impacted Media</p>
+                            <div class="form-group required row">
+                                <label class="control-label col-lg-12">(select one or more)</label>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-4">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="checkbox" formControlName="groundWater"> Groundwater
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="checkbox"  formControlName="surfaceWater"> Surface Water
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="checkbox"  formControlName="drinkingWater"> Drinking Water
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="checkbox"  formControlName="soil"> Soil
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="checkbox"  formControlName="vapor">Vapor
+                                            </label>
+                                        </div>
+                                    </div>
+                                <div class="col-sm-4">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="checkbox"  formControlName="freeProduct">Free Product
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
-                            <!-- /Reported By Email  -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                        <!-- Reported By Email -->
-                        <div class="form-row mt-4"> 
-                            <div class="form-group required col-md-4 pb-3"   >
-                                <label class="control-label" for="reportedByEmail">Reported By Email</label>
-                                <input type="text" class="form-control" id="reportedByEmail" required="required" formControlName="reportedByEmail"/>
-                                <app-show-errors [control]="incidentForm.controls.reportedByEmail"></app-show-errors>
+    
+                            <p class="text-left font-weight-bold pl-1" style="background-color: darkSeaGreen">Site Comments</p>
+                            <!-- Site Comments -->
+                            <div class="form-row mt-4">
+                                <div class="form-group col-sm-12 pb-3">
+                                    <label for="siteComments">Please enter a comment for the LUST incident (limit 704 characters)</label>
+                                    <textarea type="textarea" class="form-control" id="siteComments"  maxlength="704" rows=6  formControlName="initialComment"></textarea>
+                                </div>    
                             </div>
-                            <div class="form-group required col-md-8 pb-3 pt-5" >
-                                *This information is required to receive a submission confirmation email.
-                            </div>
-                        </div>
-                        <!-- /Reported By Email -->
-
-
-
+                            <!-- /Site Comments  -->
 
 
 

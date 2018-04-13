@@ -13,6 +13,7 @@ import { SourceType } from '../models/source-type';
 import { State } from '../models/state';
 import { StreetType } from '../models/street-type';
 
+
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json'})
 };
@@ -32,7 +33,7 @@ export class IncidentDataService {
   private _sourceType = 'sourcetype';
   private _state = 'state';
   private _streetType = 'streettype';
-
+  private _incident = 'incident';
 
   constructor(private http: HttpClient) {
   }
@@ -102,6 +103,13 @@ export class IncidentDataService {
       );
   }
 
+  createIncident(incident: Incident): Observable<Incident> {
+    return this.http.post(this._incidentUrl + this._incident, incident, httpOptions)
+    .pipe(
+      tap(data => console.log('All: ' + JSON.stringify(data))),
+      catchError(this.handleError)
+    );
+  }
 
     // Uses http.get() to load data from a single API endpoint
     // getSiteTypes(): Observable<SiteType[]> {
@@ -110,8 +118,9 @@ export class IncidentDataService {
     //       .catch(this.handleError);
     // }
 
-private handleError(err: HttpErrorResponse) {
-    console.error(err.message);
-    return Observable.throw(err.message);
-}
+  private handleError(err: HttpErrorResponse) {
+      console.error(err.message);
+      return Observable.throw(err.message);
+  }
+
 }
