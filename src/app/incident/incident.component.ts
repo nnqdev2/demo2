@@ -212,7 +212,7 @@ export class IncidentComponent implements OnInit {
 
 
   setShowContactInvoice() {
-    if (typeof this.incidentForm.controls.releaseType.value !== 'undefined' 
+    if (typeof this.incidentForm.controls.releaseType.value !== 'undefined'
     && (this.incidentForm.controls.releaseType.value === 'R' || this.incidentForm.controls.releaseType.value === 'U')) {
       this.showInvoiceContact = true;
     } else {
@@ -470,7 +470,7 @@ export class IncidentComponent implements OnInit {
        return deqOffice = 'NWR';
     }
     switch (this.incidentForm.controls.siteCounty.value) {
-      case'1': case'7':  case'9':   case'11':   case'12':  case'13':
+      case'1':  case'7':   case'9':    case'11':   case'12':  case'13':
       case'14': case'16':  case'18':   case'19':   case'23':  case'25':
       case'28': case'30':  case'31':   case'32':   case'33':  case'35':
       deqOffice = 'DAL';
@@ -478,10 +478,10 @@ export class IncidentComponent implements OnInit {
     case'20':
       deqOffice = 'EUG';
       break;
-    case'6': case'8':  case'10':   case'15':  case'17':
+    case'6':   case'8':  case'10':   case'15':  case'17':
       deqOffice = 'MDF';
       break;
-    case'2': case'21':  case'22':   case'24':  case'27': case'36':
+    case'2':   case'21':  case'22':   case'24':  case'27':   case'36':
       deqOffice = 'SLM';
       break;
     default:
