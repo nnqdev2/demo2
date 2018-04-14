@@ -236,6 +236,8 @@ export class IncidentComponent implements OnInit {
   createIncident(): void {
     const errors: any[] = this.findInvalidControls();
 
+
+
     if (this.incidentForm.valid) {
       console.log('incidentForm Submitted!', this.incidentForm.value);
     } else {
@@ -243,8 +245,13 @@ export class IncidentComponent implements OnInit {
     }
 
     if (this.incidentForm.dirty && this.incidentForm.valid) {
+
+      const deqOffice = this.getDeqOffice();
+
       // Copy the form values over the product object values
-      let p = Object.assign({}, this.incident, this.incidentForm.value);
+      const p = Object.assign({}, this.incident, this.incidentForm.value);
+
+      console.log('****p is ' + p);
 
       this.incidentDataService.createIncident(p)
           .subscribe(
@@ -362,8 +369,82 @@ export class IncidentComponent implements OnInit {
 
   populateTestData(): void {
     this.incidentForm.patchValue({
-        dateReported: Date.now()
-    });
+        dateReported: this.datePipe.transform(new Date(), 'MM-dd-yyyy'),
+    reportedBy:  'donald duck',
+    reportedByPhone:  '5039999999',
+    reportedByEmail: 'a@b.com',
+    releaseType:  'R',
+    dateReceived: this.datePipe.transform(new Date(), 'MM-dd-yyyy'),
+    facilityId: 'facilitya',
+    siteName:  'sitename',
+    siteCounty:  '12',
+    streetNbr: '12',
+    streetQuad:  'W',
+    streetName:  'Park',
+    streetType: 'Avenue',
+    // siteAddress:  ['', Validators.required],
+    siteCity:  'Salem',
+    siteZipcode: '90099',
+    sitePhone: '1231234444',
+    company:  'disney',
+    initialComment:  'my init comments',
+    discoveryDate: this.datePipe.transform(new Date(), 'MM-dd-yyyy'),
+    confirmationCode: 'CN',
+    discoveryCode:  'OT',
+    causeCode: 'OT',
+    sourceId: '1',
+    rpFirstName: 'rpfname',
+    rpLastName: 'rplname',
+    rpOrganization: 'rporg',
+    rpAddress:  'rpAddress',
+    rpAddress2: 'rpAddress2',
+    rpCity: 'salem',
+    rpState:  'OR',
+    rpZipcode: '97008',
+    rpPhone:  '9999999999',
+    rpEmail: 'b@c.com',
+    icFirstName:  'icFirstName',
+    icLastName: 'iclname',
+    icOrganization:  'icOrg',
+    icAddress:  'icAddress',
+    icAddress2: 'icAddress2',
+    icCity:  'Salem',
+    icState:  'OR',
+    icZipcode: '97224',
+    icPhone:  '9098087777',
+    icEmail:  'r@v.y',
+    groundWater: 1,
+    surfaceWater: 1,
+    drinkingWater: 1,
+    soil: 1,
+    vapor: 1,
+    freeProduct: 1,
+    unleadedGas: 1,
+    leadedGas: 1,
+    misGas: 1,
+    diesel: 1,
+    wasteOil: 1,
+    heatingOil: 1,
+    lubricant: 1,
+    solvent: 1,
+    otherPet: 1,
+    chemical: 1,
+    unknown: 1,
+    mtbe: 1
+    // dateReleaseDiscovered: ['', Validators.required],
+    // quadrant: ['', Validators.required]
+  });
+
+  this.incidentForm.patchValue({
+    dateReceived: this.datePipe.transform(new Date(), 'MM-dd-yyyy')
+  });
+
+
+
+
+
+
+    // end of populate test data
   }
 
   transformDate(date) {
@@ -380,5 +461,36 @@ export class IncidentComponent implements OnInit {
         }
     }
     return invalid;
-}
+  }
+
+  private getDeqOffice(): string {
+    let deqOffice = 'NWR';
+    console.log('this.incidentForm.controls.siteCounty.value===>' + this.incidentForm.controls.siteCounty.value);
+    if (this.incidentForm.controls.releaseType.value === 'H') {
+       return deqOffice = 'NWR';
+    }
+    switch (this.incidentForm.controls.siteCounty.value) {
+      case'1': case'7':  case'9':   case'11':   case'12':  case'13':
+      case'14': case'16':  case'18':   case'19':   case'23':  case'25':
+      case'28': case'30':  case'31':   case'32':   case'33':  case'35':
+      deqOffice = 'DAL';
+      break;
+    case'20':
+      deqOffice = 'EUG';
+      break;
+    case'6': case'8':  case'10':   case'15':  case'17':
+      deqOffice = 'MDF';
+      break;
+    case'2': case'21':  case'22':   case'24':  case'27': case'36':
+      deqOffice = 'SLM';
+      break;
+    default:
+      deqOffice = 'NWR';
+      break;
+    }
+    console.log('deqOffice===>' + deqOffice);
+    return deqOffice;
+  }
+
+
 }

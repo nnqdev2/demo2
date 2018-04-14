@@ -505,7 +505,7 @@
                                 <!-- <button type="submit" class="btn btn-success btn-md btn-block" >Submit</button> -->
                             </div>
                             <div class="col-sm-3">
-                                <button type="reset" class="btn btn-default btn-md btn-block">Clear All Fields</button>
+                                <button type="button" class="btn btn-default btn-md btn-block" (click)="populateTestData()">Populate Test Data</button>
                             </div>
                         </div>
                         <pre>incidentForm: {{ incidentForm.value | json }}</pre>
