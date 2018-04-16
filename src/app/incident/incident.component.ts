@@ -128,7 +128,7 @@ export class IncidentComponent implements OnInit {
       chemical: [''],
       unknown: [''],
       mtbe: [''],
-      submitDatetime: [],
+      submitDateTime: [''],
       deqOffice: ['']
     });
     this.incidentForm.patchValue({
@@ -185,11 +185,12 @@ export class IncidentComponent implements OnInit {
         + `${this.incidentForm.controls.streetQuad.value} `
         + `${this.incidentForm.controls.streetName.value} `
         + `${this.incidentForm.controls.streetType.value} `);
-      // this.incidentForm.controls.submitDateTime.setValue(new Date(), 'MM-dd-yyyy');
 
-      let ngbDate = this.incidentForm.controls['discoveryDate'].value;
-      let myDate = new Date(ngbDate.year, ngbDate.month, ngbDate.day);
+
+      const ngbDate = this.incidentForm.controls['discoveryDate'].value;
+      const myDate = new Date(ngbDate.year, ngbDate.month, ngbDate.day);
       this.incidentForm.controls['discoveryDate'].setValue(myDate);
+      this.incidentForm.controls['submitDateTime'].setValue(myDate);
 
       console.log('*********this.incidentForm is ' + (this.incidentForm));
       console.log('*********this.incident is ' + JSON.stringify(this.incident));
