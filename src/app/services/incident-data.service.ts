@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { environment } from '../../environments/environment';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Observable} from 'rxjs/Observable';
 import { catchError, tap} from 'rxjs/operators';
@@ -21,9 +22,7 @@ const httpOptions = {
 @Injectable()
 export class IncidentDataService {
 
-  // todo: setup configuraton files
-  private _incidentUrl = 'http://nquanrest1/olprr/';
-  // olprr endpoints
+  private _incidentUrl = environment.olprrapi;
   private _confirmationType = 'confirmationtype';
   private _county = 'county';
   private _discoveryType = 'discoverytype';
