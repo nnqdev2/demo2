@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import 'rxjs/Rx';
+// import 'rxjs/Rx';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
@@ -30,7 +30,7 @@ import { Incident } from '../models/incident';
 })
 export class IncidentComponent implements OnInit {
 
-  incident: Incident;
+  incident: Incident = new Incident();
   incidentForm: FormGroup;
   confirmationTypes: ConfirmationType[] = [];
   counties: County[] = [];
@@ -65,6 +65,8 @@ export class IncidentComponent implements OnInit {
 
  createForm() {
     this.incidentForm = this.formBuilder.group({
+      contractorUid:  [''],
+      contractorPwd:  [''],
       reportedBy:  ['', Validators.required],
       reportedByPhone:  ['', Validators.required],
       reportedByEmail: ['', [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+')]],
@@ -77,7 +79,7 @@ export class IncidentComponent implements OnInit {
       streetQuad:  ['', Validators.required],
       streetName:  ['', Validators.required],
       streetType: ['', Validators.required],
-      // siteAddress:  ['', Validators.required],
+      siteAddress:  [''],
       siteCity:  ['', Validators.required],
       siteZipcode: ['', Validators.required],
       sitePhone:  [''],
@@ -125,9 +127,9 @@ export class IncidentComponent implements OnInit {
       otherPet: [''],
       chemical: [''],
       unknown: [''],
-      mtbe: ['']
-      // dateReleaseDiscovered: ['', Validators.required],
-      // quadrant: ['', Validators.required]
+      mtbe: [''],
+      submitDatetime: [],
+      deqOffice: ['']
     });
     this.incidentForm.patchValue({
       dateReceived: this.datePipe.transform(new Date(), 'MM-dd-yyyy')
@@ -135,76 +137,6 @@ export class IncidentComponent implements OnInit {
   }
 
 
-  createFormSAVE() {
-    this.incidentForm = this.formBuilder.group({
-      reportedBy:  ['', Validators.required],
-      reportedByPhone:  ['', Validators.required],
-      reportedByEmail: ['', [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+')]],
-      releaseType:  ['', Validators.required],
-      dateReceived:  [{value: '', disabled: true,  validators: Validators.required}],
-      facilityId: [''],
-      siteName:  ['', Validators.required],
-      siteCounty:  ['', Validators.required],
-      streetNbr: ['', Validators.required],
-      streetQuad:  ['', Validators.required],
-      streetName:  ['', Validators.required],
-      streetType: ['', Validators.required],
-      // siteAddress:  [''],
-      siteCity:  ['', Validators.required],
-      siteZipcode: ['', Validators.required],
-      sitePhone:  [''],
-      company:  ['', Validators.required],
-      initialComment:  ['', Validators.maxLength(704)],
-      discoveryDate: ['', Validators.required],
-      confirmationCode:  ['', Validators.required],
-      discoveryCode:  ['', Validators.required],
-      causeCode: ['', Validators.required],
-      sourceId:  ['', Validators.required],
-      rpFirstName:  ['', Validators.required],
-      rpLastName: ['', Validators.required],
-      rpOrganization:  ['', Validators.required],
-      rpAddress:  [''],
-      rpAddress2: [''],
-      rpCity:  ['', Validators.required],
-      rpState:  ['', Validators.required],
-      rpZipcode: ['', Validators.required],
-      rpPhone:  ['', Validators.required],
-      rpEmail:  [''],
-      icFirstName:  ['', Validators.required],
-      icLastName: ['', Validators.required],
-      icOrganization:  ['', Validators.required],
-      icAddress:  [''],
-      icAddress2: [''],
-      icCity:  ['', Validators.required],
-      icState:  ['', Validators.required],
-      icZipcode: ['', Validators.required],
-      icPhone:  ['', Validators.required],
-      icEmail:  [''],
-      groundWater: [''],
-      surfaceWater: [''],
-      drinkingWater: [''],
-      soil: [''],
-      vapor: [''],
-      freeProduct: [''],
-      unleadedGas: [''],
-      leadedGas: [''],
-      misGas: [''],
-      diesel: [''],
-      wasteOil: [''],
-      heatingOil: [''],
-      lubricant: [''],
-      solvent: [''],
-      otherPet: [''],
-      chemical: [''],
-      unknown: [''],
-      mtbe: ['']
-      // dateReleaseDiscovered: ['', Validators.required],
-      // quadrant: ['', Validators.required]
-    });
-    this.incidentForm.patchValue({
-      dateReceived: this.datePipe.transform(new Date(), 'MM-dd-yyyy')
-    });
-  }
 
 
 
@@ -246,12 +178,26 @@ export class IncidentComponent implements OnInit {
 
     if (this.incidentForm.dirty && this.incidentForm.valid) {
 
-      const deqOffice = this.getDeqOffice();
+      this.incidentForm.controls.deqOffice.setValue(this.getDeqOffice());
+      this.incidentForm.controls.contractorUid.setValue('DENNIS');
+      this.incidentForm.controls.contractorPwd.setValue('TERZIAN');
+      this.incidentForm.controls.siteAddress.setValue(`${this.incidentForm.controls.streetNbr.value} `
+        + `${this.incidentForm.controls.streetQuad.value} `
+        + `${this.incidentForm.controls.streetName.value} `
+        + `${this.incidentForm.controls.streetType.value} `);
+      // this.incidentForm.controls.submitDateTime.setValue(new Date(), 'MM-dd-yyyy');
+
+      let ngbDate = this.incidentForm.controls['discoveryDate'].value;
+      let myDate = new Date(ngbDate.year, ngbDate.month, ngbDate.day);
+      this.incidentForm.controls['discoveryDate'].setValue(myDate);
+
+      console.log('*********this.incidentForm is ' + (this.incidentForm));
+      console.log('*********this.incident is ' + JSON.stringify(this.incident));
 
       // Copy the form values over the product object values
       const p = Object.assign({}, this.incident, this.incidentForm.value);
 
-      console.log('****p is ' + p);
+      console.log('*********p is ' + JSON.stringify(p));
 
       this.incidentDataService.createIncident(p)
           .subscribe(
@@ -375,7 +321,7 @@ export class IncidentComponent implements OnInit {
     reportedByEmail: 'a@b.com',
     releaseType:  'R',
     dateReceived: this.datePipe.transform(new Date(), 'MM-dd-yyyy'),
-    facilityId: 'facilitya',
+    facilityId: 2,
     siteName:  'sitename',
     siteCounty:  '12',
     streetNbr: '12',
@@ -392,7 +338,7 @@ export class IncidentComponent implements OnInit {
     confirmationCode: 'CN',
     discoveryCode:  'OT',
     causeCode: 'OT',
-    sourceId: '1',
+    sourceId: '2',
     rpFirstName: 'rpfname',
     rpLastName: 'rplname',
     rpOrganization: 'rporg',
@@ -430,9 +376,8 @@ export class IncidentComponent implements OnInit {
     otherPet: 1,
     chemical: 1,
     unknown: 1,
-    mtbe: 1
-    // dateReleaseDiscovered: ['', Validators.required],
-    // quadrant: ['', Validators.required]
+    mtbe: 1,
+    submitDatetime: new Date()
   });
 
   this.incidentForm.patchValue({
@@ -478,10 +423,10 @@ export class IncidentComponent implements OnInit {
     case'20':
       deqOffice = 'EUG';
       break;
-    case'6':   case'8':  case'10':   case'15':  case'17':
+    case'6':  case'8':  case'10':   case'15':  case'17':
       deqOffice = 'MDF';
       break;
-    case'2':   case'21':  case'22':   case'24':  case'27':   case'36':
+    case'2':  case'21':  case'22':  case'24':  case'27':   case'36':
       deqOffice = 'SLM';
       break;
     default:

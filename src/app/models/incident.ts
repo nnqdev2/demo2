@@ -22,7 +22,7 @@ export class Incident {
     confirmationCode: string;
     discoveryCode: string;
     causeCode: string;
-    sourceId: string;
+    sourceId: number;
     rpFirstName: string;
     rpLastName: string;
     rpOrganization: string;
