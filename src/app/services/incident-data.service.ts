@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Observable} from 'rxjs/Observable';
-import { catchError, tap} from 'rxjs/operators';
+import { catchError, tap, retry} from 'rxjs/operators';
 import { Incident } from '../models/incident';
 import { ConfirmationType } from '../models/confirmation-type';
 import { County } from '../models/county';
@@ -42,6 +42,7 @@ export class IncidentDataService {
     return this.http.get<ConfirmationType[]>(this._incidentUrl + this._confirmationType, httpOptions)
       .pipe(
         tap(data => console.log('All: ' + JSON.stringify(data))),
+        retry(3),
         catchError(this.handleError)
       );
   }
@@ -49,6 +50,7 @@ export class IncidentDataService {
     return this.http.get<County[]>(this._incidentUrl + this._county, httpOptions)
       .pipe(
         tap(data => console.log('All: ' + JSON.stringify(data))),
+        retry(3),
         catchError(this.handleError)
       );
   }
@@ -56,6 +58,7 @@ export class IncidentDataService {
     return this.http.get<DiscoveryType[]>(this._incidentUrl + this._discoveryType, httpOptions)
       .pipe(
         tap(data => console.log('All: ' + JSON.stringify(data))),
+        retry(3),
         catchError(this.handleError)
       );
   }
@@ -63,6 +66,7 @@ export class IncidentDataService {
     return this.http.get<Quadrant[]>(this._incidentUrl + this._quadrant, httpOptions)
       .pipe(
         tap(data => console.log('All: ' + JSON.stringify(data))),
+        retry(3),
         catchError(this.handleError)
       );
   }
@@ -70,6 +74,7 @@ export class IncidentDataService {
     return this.http.get<ReleaseCauseType[]>(this._incidentUrl + this._releaseCauseType, httpOptions)
       .pipe(
         tap(data => console.log('All: ' + JSON.stringify(data))),
+        retry(3),
         catchError(this.handleError)
       );
   }
@@ -77,6 +82,7 @@ export class IncidentDataService {
     return this.http.get<SiteType[]>(this._incidentUrl + this._siteType, httpOptions)
       .pipe(
         tap(data => console.log('All: ' + JSON.stringify(data))),
+        retry(3),
         catchError(this.handleError)
       );
   }
@@ -84,6 +90,7 @@ export class IncidentDataService {
     return this.http.get<SourceType[]>(this._incidentUrl + this._sourceType, httpOptions)
       .pipe(
         tap(data => console.log('All: ' + JSON.stringify(data))),
+        retry(3),
         catchError(this.handleError)
       );
   }
@@ -91,6 +98,7 @@ export class IncidentDataService {
     return this.http.get<State[]>(this._incidentUrl + this._state, httpOptions)
       .pipe(
         tap(data => console.log('All: ' + JSON.stringify(data))),
+        retry(3),
         catchError(this.handleError)
       );
   }
@@ -98,6 +106,7 @@ export class IncidentDataService {
     return this.http.get<StreetType[]>(this._incidentUrl + this._streetType, httpOptions)
       .pipe(
         tap(data => console.log('All: ' + JSON.stringify(data))),
+        retry(3),
         catchError(this.handleError)
       );
   }

@@ -26,7 +26,7 @@ import { Incident } from '../models/incident';
   selector: 'app-incident',
   templateUrl: './incident.component.html',
   styleUrls: ['./incident.component.css'],
-  providers: [ DatePipe ]
+  providers: [ DatePipe, IncidentDataService ]
 })
 export class IncidentComponent implements OnInit {
 
@@ -136,13 +136,6 @@ export class IncidentComponent implements OnInit {
     });
   }
 
-
-
-
-
-
-
-
   setShowContactInvoice() {
     if (typeof this.incidentForm.controls.releaseType.value !== 'undefined'
     && (this.incidentForm.controls.releaseType.value === 'R' || this.incidentForm.controls.releaseType.value === 'U')) {
@@ -151,7 +144,6 @@ export class IncidentComponent implements OnInit {
       this.showInvoiceContact = false;
     }
   }
-
 
   copyResponsibleToInvoice() {
     this.incidentForm.controls.icFirstName.setValue(this.incidentForm.controls.rpFirstName.value);
@@ -213,6 +205,7 @@ export class IncidentComponent implements OnInit {
     // Reset the form to clear the flags
     console.log('ok did it!!!!');
     this.incidentForm.reset();
+    throw new Error('ERRRRRRRRRRRRRRRRRRRRRRRRRRR');
   }
 
   getConfirmationTypes() {
