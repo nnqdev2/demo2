@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 
 import { MessageService } from './message.service';
+import { LogService, LogEntry } from './shared/log.service';
 
 /** Type of the handleError function returned by HttpErrorHandler.createHandleError */
 export type HandleError =
@@ -13,7 +14,7 @@ export type HandleError =
 /** Handles HttpClient errors */
 @Injectable()
 export class HttpErrorHandler {
-  constructor(private messageService: MessageService) { }
+  constructor(private messageService: MessageService, private logService: LogService) { }
 
   /** Create curried handleError function that already knows the service name */
   createHandleError = (serviceName = '') => <T>
@@ -29,12 +30,40 @@ export class HttpErrorHandler {
   handleError<T> (serviceName = '', operation = 'operation', result = {} as T) {
 
     return (error: HttpErrorResponse): Observable<T> => {
-      // TODO: send the error to remote logging infrastructure
+
+      console.error('***** HTTPERRORHANDLER handleError<T> Starts  1 log error'); // log to console instead
       console.error(error); // log to console instead
+      console.error('***** HTTPERRORHANDLER handleError<T> Starts  1 log error'); // log to console instead
+
+      // TODO: send the error to remote logging infrastructure
+      console.error('***** HTTPERRORHANDLER handleError<T> Starts  2 serviceName, operation, result'); // log to console instead
+      console.error(serviceName);
+      console.error(operation);
+      console.error(result);
+      console.error('***** HTTPERRORHANDLER handleError<T> Starts  2 =====');
+
+
+
+
+      const testJSON = JSON.stringify(error);
+
+
+      console.error('***** HTTPERRORHANDLER handleError<T> Starts 3 log error'); // log to console instead
+      console.error(testJSON); // log to console instead
+      console.error('***** HTTPERRORHANDLER handleError<T> Starts  3 log error'); // log to console instead
+
+      this.logService.error(testJSON, [testJSON] );
+
+
+
 
       const message = (error.error instanceof ErrorEvent) ?
         error.error.message :
-       `server returned code ${error.status} with body "${error.error}"`;
+       `server returned code ${error.status} with body "${testJSON}"`;
+
+       console.error('***** HTTPERRORHANDLER handleError<T> Starts 4 message'); // log to console instead
+       console.error(message);
+       console.error('***** HTTPERRORHANDLER handleError<T> Starts 4 message'); // log to console instead
 
       // TODO: better job of transforming error for user consumption
       this.messageService.add(`${serviceName}: ${operation} failed: ${message}`);

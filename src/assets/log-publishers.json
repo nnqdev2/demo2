@@ -6,12 +6,12 @@
   },
   {
     "loggerName": "localstorage",
-    "loggerLocation" : "logging",
+    "loggerLocation" : "localstorage====>logging",
     "isActive" : true
   },
   {
     "loggerName": "webapi",
-    "loggerLocation" : "log",
+    "loggerLocation" : "serverstorage====>log",
     "isActive" : true
   }
 ]

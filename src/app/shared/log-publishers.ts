@@ -92,9 +92,15 @@ export class LogWebApi extends LogPublisher {
     //   .map(response => response.json)
     //   .catch(this.handleErrors);
 
-    console.log('$$$$$$$$$$$$$$$$$$$ log api: ' + this.location);
-    console.log('$$$$$$$$$$$$$$$$$$$ log api payload: ' + JSON.stringify(record));
-    return this.http.post(this.location, record, httpOptions)
+    const testJSON = JSON.stringify(record);
+    console.error('$$$$$$$$$$$$$$$$$$$ log api: ' + this.location);
+    console.error('$$$$$$$$$$$$$$$$$$$ log api payload: ' + (record));
+    console.error('$$$$$$$$$$$$$$$$$$$ log api payload: ' + JSON.stringify(record));
+    console.error(record);
+    console.error('$$$$$$$$$$$$$$$$$$$ log api: ' + this.location);
+    console.error('$$$$$$$$$$$$$$$$$$$ log api: ' + this.location);
+    console.error('$$$$$$$$$$$$$$$$$$$ log api: ' + this.location);
+    return this.http.post(this.location, testJSON, httpOptions)
         .pipe(
         tap(data => console.log('All: ' + JSON.stringify(data))),
         catchError(this.handleErrors)
@@ -110,6 +116,10 @@ export class LogWebApi extends LogPublisher {
     const errors: string[] = [];
     let msg = '';
 
+    console.error('####An error occurred in log-publishers handlerErrors routine#####');
+    console.error( error );
+    console.error('####An error occurred in log-publishers handlerErrors routine#####');
+
     msg = 'Status: ' + error.status;
     msg += ' - Status Text: ' + error.statusText;
     if (error.json()) {
@@ -118,7 +128,7 @@ export class LogWebApi extends LogPublisher {
 
     errors.push(msg);
 
-    console.error('An error occurred', errors);
+
 
     return Observable.throw(errors);
   }

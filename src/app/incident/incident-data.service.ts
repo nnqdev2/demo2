@@ -13,6 +13,8 @@ import { SiteType } from '../models/site-type';
 import { SourceType } from '../models/source-type';
 import { State } from '../models/state';
 import { StreetType } from '../models/street-type';
+import { HttpErrorHandler, HandleError } from '../http-error-handler.service';
+import { error } from 'util';
 
 
 const httpOptions = {
@@ -22,6 +24,7 @@ const httpOptions = {
 @Injectable()
 export class IncidentDataService {
 
+  private handleError: HandleError;
   private _incidentUrl = environment.olprrapi;
   private _confirmationType = 'confirmationtype';
   private _county = 'county';
@@ -34,24 +37,28 @@ export class IncidentDataService {
   private _streetType = 'streettype';
   private _incident = 'incident';
 
-  constructor(private http: HttpClient) {
+  // constructor(@Inject(forwardRef(() => LogService)) private logService: LogService) { }
+  constructor(private http: HttpClient
+    , private httpErrorHandler: HttpErrorHandler) {
+      this.handleError = httpErrorHandler.createHandleError('IncidentDataService');
   }
 
   // Uses http.get() to load data from a single API endpoint
   getConfirmationTypes(): Observable<ConfirmationType[]> {
     return this.http.get<ConfirmationType[]>(this._incidentUrl + this._confirmationType, httpOptions)
       .pipe(
-        tap(data => console.log('All: ' + JSON.stringify(data))),
+        tap(data => console.log('*****HTTP GET succeeded confirmation type All: ' + JSON.stringify(data))),
         retry(3),
-        catchError(this.handleError)
+        catchError(this.handleError<ConfirmationType[]>('getConfirmationTypes', []))
       );
   }
+
   getCounties(): Observable<County[]> {
     return this.http.get<County[]>(this._incidentUrl + this._county, httpOptions)
       .pipe(
         tap(data => console.log('All: ' + JSON.stringify(data))),
         retry(3),
-        catchError(this.handleError)
+        catchError(this.handleErrors)
       );
   }
   getDiscoveryTypes(): Observable<DiscoveryType[]> {
@@ -59,7 +66,7 @@ export class IncidentDataService {
       .pipe(
         tap(data => console.log('All: ' + JSON.stringify(data))),
         retry(3),
-        catchError(this.handleError)
+        catchError(this.handleErrors)
       );
   }
   getQuadrants(): Observable<Quadrant[]> {
@@ -67,7 +74,7 @@ export class IncidentDataService {
       .pipe(
         tap(data => console.log('All: ' + JSON.stringify(data))),
         retry(3),
-        catchError(this.handleError)
+        catchError(this.handleErrors)
       );
   }
   getReleaseCauseTypes(): Observable<ReleaseCauseType[]> {
@@ -75,7 +82,7 @@ export class IncidentDataService {
       .pipe(
         tap(data => console.log('All: ' + JSON.stringify(data))),
         retry(3),
-        catchError(this.handleError)
+        catchError(this.handleErrors)
       );
   }
   getSiteTypes(): Observable<SiteType[]> {
@@ -83,7 +90,7 @@ export class IncidentDataService {
       .pipe(
         tap(data => console.log('All: ' + JSON.stringify(data))),
         retry(3),
-        catchError(this.handleError)
+        catchError(this.handleErrors)
       );
   }
   getSourceTypes(): Observable<SourceType[]> {
@@ -91,7 +98,7 @@ export class IncidentDataService {
       .pipe(
         tap(data => console.log('All: ' + JSON.stringify(data))),
         retry(3),
-        catchError(this.handleError)
+        catchError(this.handleErrors)
       );
   }
   getStates(): Observable<State[]> {
@@ -99,7 +106,7 @@ export class IncidentDataService {
       .pipe(
         tap(data => console.log('All: ' + JSON.stringify(data))),
         retry(3),
-        catchError(this.handleError)
+        catchError(this.handleErrors)
       );
   }
   getStreetTypes(): Observable<StreetType[]> {
@@ -107,7 +114,7 @@ export class IncidentDataService {
       .pipe(
         tap(data => console.log('All: ' + JSON.stringify(data))),
         retry(3),
-        catchError(this.handleError)
+        catchError(this.handleErrors)
       );
   }
 
@@ -115,7 +122,7 @@ export class IncidentDataService {
     return this.http.post(this._incidentUrl + this._incident, incident, httpOptions)
     .pipe(
       tap(data => console.log('All: ' + JSON.stringify(data))),
-      catchError(this.handleError)
+      catchError(this.handleErrors)
     );
   }
 
@@ -126,7 +133,7 @@ export class IncidentDataService {
     //       .catch(this.handleError);
     // }
 
-  private handleError(err: HttpErrorResponse) {
+  private handleErrors(err: HttpErrorResponse) {
       console.error(err.message);
       return Observable.throw(err.message);
   }

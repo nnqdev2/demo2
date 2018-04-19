@@ -83,6 +83,9 @@ export class LogService {
   }
 
   error(msg: string, ...optionalParams: any[]) {
+    console.log ('*****logservice.error msg:' + msg + ' optionalParams: ' + optionalParams);
+    console.log ('*****logservice.error msg:' + msg + ' optionalParams: ' + optionalParams);
+    console.log ('*****logservice.error msg:' + msg + ' optionalParams: ' + optionalParams);
     this.writeToLog(msg, LogLevel.Error, optionalParams);
   }
 
@@ -104,14 +107,28 @@ export class LogService {
     if (this.shouldLog(level)) {
       const entry: LogEntry = new LogEntry();
 
+
+      console.log('************writeToLog: 1111 msg, params ==>' );
+      console.log( msg ) ;
+      console.log( params);
+      console.log('************writeToLog: 1111 msg, params ==>' );
       entry.message = msg;
       entry.level = level;
       entry.extraInfo = params;
       entry.logWithDate = this.logWithDate;
 
+      console.log('************writeToLog: 2222 entry.message, entry.extraInfo ==>' );
+      console.log( entry.message ) ;
+      console.log( entry.extraInfo);
+      console.log('************writeToLog: 2222 entry.message, entry.extraInfo ==>' );
+
+      console.log('************where am i?????');
+
+
       // Log the value to all publishers
       for (const logger of this.publishers) {
-        logger.log(entry).subscribe(response => console.log(response));
+        logger.log(entry).subscribe(response => console.log('*********** publisherssss writeToLog: location ' +
+        logger.location + ' response===> ' + response));
       }
     }
   }

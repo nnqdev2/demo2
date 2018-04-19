@@ -8,7 +8,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/of';
 
 import {DatePipe} from '@angular/common';
-import { IncidentDataService } from '../services/incident-data.service';
+import { IncidentDataService } from './incident-data.service';
 import { SiteType } from '../models/site-type';
 
 import { ConfirmationType } from '../models/confirmation-type';
@@ -377,12 +377,6 @@ export class IncidentComponent implements OnInit {
   this.incidentForm.patchValue({
     dateReceived: this.datePipe.transform(new Date(), 'MM-dd-yyyy')
   });
-
-
-
-
-
-
     // end of populate test data
   }
 
@@ -390,21 +384,8 @@ export class IncidentComponent implements OnInit {
     this.datePipe.transform(date, 'yyyy-MM-dd');
   }
 
-  public findInvalidControls() {
-    const invalid = [];
-    const controls = this.incidentForm.controls;
-    for (const name in controls) {
-        if (controls[name].invalid) {
-            console.log('********** offending name ===>' + name);
-            invalid.push(name);
-        }
-    }
-    return invalid;
-  }
-
   private getDeqOffice(): string {
     let deqOffice = 'NWR';
-    console.log('this.incidentForm.controls.siteCounty.value===>' + this.incidentForm.controls.siteCounty.value);
     if (this.incidentForm.controls.releaseType.value === 'H') {
        return deqOffice = 'NWR';
     }
@@ -427,9 +408,18 @@ export class IncidentComponent implements OnInit {
       deqOffice = 'NWR';
       break;
     }
-    console.log('deqOffice===>' + deqOffice);
     return deqOffice;
   }
 
-
+  public findInvalidControls() {
+    const invalid = [];
+    const controls = this.incidentForm.controls;
+    for (const name in controls) {
+        if (controls[name].invalid) {
+            console.log('********** offending name ===>' + name);
+            invalid.push(name);
+        }
+    }
+    return invalid;
+  }
 }
