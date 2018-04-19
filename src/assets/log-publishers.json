@@ -2,12 +2,12 @@
   {
     "loggerName": "console",
     "loggerLocation" : "",
-    "isActive" : true
+    "isActive" : false
   },
   {
     "loggerName": "localstorage",
     "loggerLocation" : "localstorage====>logging",
-    "isActive" : true
+    "isActive" : false
   },
   {
     "loggerName": "webapi",

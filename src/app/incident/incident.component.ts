@@ -159,14 +159,11 @@ export class IncidentComponent implements OnInit {
 
   createIncident(): void {
     const errors: any[] = this.findInvalidControls();
-
-
-
-    if (this.incidentForm.valid) {
-      console.log('incidentForm Submitted!', this.incidentForm.value);
-    } else {
-      console.log('incidentForm is not Valid therefore not Submitted!', this.incidentForm.value);
-    }
+    // if (this.incidentForm.valid) {
+    //   console.log('incidentForm Submitted!', this.incidentForm.value);
+    // } else {
+    //   console.log('incidentForm is not Valid therefore not Submitted!', this.incidentForm.value);
+    // }
 
     if (this.incidentForm.dirty && this.incidentForm.valid) {
 
@@ -184,13 +181,13 @@ export class IncidentComponent implements OnInit {
       this.incidentForm.controls['discoveryDate'].setValue(myDate);
       this.incidentForm.controls['submitDateTime'].setValue(myDate);
 
-      console.log('*********this.incidentForm is ' + (this.incidentForm));
-      console.log('*********this.incident is ' + JSON.stringify(this.incident));
+      // console.log('*********this.incidentForm is ' + (this.incidentForm));
+      // console.log('*********this.incident is ' + JSON.stringify(this.incident));
 
       // Copy the form values over the product object values
       const p = Object.assign({}, this.incident, this.incidentForm.value);
 
-      console.log('*********p is ' + JSON.stringify(p));
+      // console.log('*********p is ' + JSON.stringify(p));
 
       this.incidentDataService.createIncident(p)
           .subscribe(
@@ -213,9 +210,10 @@ export class IncidentComponent implements OnInit {
       // the first argument is a function which runs on success
       data => { this.confirmationTypes = data; },
       // the second argument is a function which runs on error
-      err => console.error(err),
-      // the third argument is a function which runs on completion
-      () => console.log('done loading getConfirmationTypes')
+      err => console.error(err)
+      // ,
+      // // the third argument is a function which runs on completion
+      // () => console.log('done loading getConfirmationTypes')
     );
   }
 
@@ -224,9 +222,10 @@ export class IncidentComponent implements OnInit {
       // the first argument is a function which runs on success
       data => { this.counties = data; },
       // the second argument is a function which runs on error
-      err => console.error(err),
-      // the third argument is a function which runs on completion
-      () => console.log('done loading getCounties')
+      err => console.error(err)
+      // ,
+      // // the third argument is a function which runs on completion
+      // () => console.log('done loading getCounties')
     );
   }
 
@@ -235,9 +234,10 @@ export class IncidentComponent implements OnInit {
       // the first argument is a function which runs on success
       data => { this.discoveryTypes = data; },
       // the second argument is a function which runs on error
-      err => console.error(err),
-      // the third argument is a function which runs on completion
-      () => console.log('done loading getDiscoveryTypes')
+      err => console.error(err)
+      // ,
+      // // the third argument is a function which runs on completion
+      // () => console.log('done loading getDiscoveryTypes')
     );
   }
 
@@ -246,9 +246,10 @@ export class IncidentComponent implements OnInit {
       // the first argument is a function which runs on success
       data => { this.quadrants = data; },
       // the second argument is a function which runs on error
-      err => console.error(err),
-      // the third argument is a function which runs on completion
-      () => console.log('done loading getQuadrants')
+      err => console.error(err)
+      // ,
+      // // the third argument is a function which runs on completion
+      // () => console.log('done loading getQuadrants')
     );
   }
 
@@ -257,9 +258,10 @@ export class IncidentComponent implements OnInit {
       // the first argument is a function which runs on success
       data => { this.releaseCauseTypes = data; },
       // the second argument is a function which runs on error
-      err => console.error(err),
-      // the third argument is a function which runs on completion
-      () => console.log('done loading getReleaseCauseTypes')
+      err => console.error(err)
+      // ,
+      // // the third argument is a function which runs on completion
+      // () => console.log('done loading getReleaseCauseTypes')
     );
   }
 
@@ -268,9 +270,10 @@ export class IncidentComponent implements OnInit {
       // the first argument is a function which runs on success
       data => { this.siteTypes = data; },
       // the second argument is a function which runs on error
-      err => console.error(err),
-      // the third argument is a function which runs on completion
-      () => console.log('done loading sitetypes')
+      err => console.error(err)
+      // ,
+      // // the third argument is a function which runs on completion
+      // () => console.log('done loading sitetypes')
     );
   }
 
@@ -279,9 +282,10 @@ export class IncidentComponent implements OnInit {
       // the first argument is a function which runs on success
       data => { this.sourceTypes = data; },
       // the second argument is a function which runs on error
-      err => console.error(err),
-      // the third argument is a function which runs on completion
-      () => console.log('done loading getSourceTypes')
+      err => console.error(err)
+      // ,
+      // // the third argument is a function which runs on completion
+      // () => console.log('done loading getSourceTypes')
     );
   }
 
@@ -290,9 +294,10 @@ export class IncidentComponent implements OnInit {
       // the first argument is a function which runs on success
       data => { this.states = data; },
       // the second argument is a function which runs on error
-      err => console.error(err),
-      // the third argument is a function which runs on completion
-      () => console.log('done loading getStates')
+      err => console.error(err)
+      // ,
+      // // the third argument is a function which runs on completion
+      // () => console.log('done loading getStates')
     );
   }
 
@@ -301,9 +306,10 @@ export class IncidentComponent implements OnInit {
       // the first argument is a function which runs on success
       data => { this.streetTypes = data; },
       // the second argument is a function which runs on error
-      err => console.error(err),
-      // the third argument is a function which runs on completion
-      () => console.log('done loading getStreetTypes')
+      err => console.error(err)
+      // ,
+      // // the third argument is a function which runs on completion
+      // () => console.log('done loading getStreetTypes')
     );
   }
 

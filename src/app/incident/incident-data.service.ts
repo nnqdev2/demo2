@@ -16,11 +16,6 @@ import { StreetType } from '../models/street-type';
 import { HttpErrorHandler, HandleError } from '../http-error-handler.service';
 import { error } from 'util';
 
-
-const httpOptions = {
-  headers: new HttpHeaders({ 'Content-Type': 'application/json'})
-};
-
 @Injectable()
 export class IncidentDataService {
 
@@ -43,85 +38,83 @@ export class IncidentDataService {
       this.handleError = httpErrorHandler.createHandleError('IncidentDataService');
   }
 
-  // Uses http.get() to load data from a single API endpoint
   getConfirmationTypes(): Observable<ConfirmationType[]> {
-    return this.http.get<ConfirmationType[]>(this._incidentUrl + this._confirmationType, httpOptions)
+    return this.http.get<ConfirmationType[]>(this._incidentUrl + this._confirmationType)
       .pipe(
-        tap(data => console.log('*****HTTP GET succeeded confirmation type All: ' + JSON.stringify(data))),
         retry(3),
         catchError(this.handleError<ConfirmationType[]>('getConfirmationTypes', []))
       );
   }
 
   getCounties(): Observable<County[]> {
-    return this.http.get<County[]>(this._incidentUrl + this._county, httpOptions)
+    return this.http.get<County[]>(this._incidentUrl + this._county)
       .pipe(
-        tap(data => console.log('All: ' + JSON.stringify(data))),
+        // tap(data => console.log('All: ' + JSON.stringify(data))),
         retry(3),
         catchError(this.handleErrors)
       );
   }
   getDiscoveryTypes(): Observable<DiscoveryType[]> {
-    return this.http.get<DiscoveryType[]>(this._incidentUrl + this._discoveryType, httpOptions)
+    return this.http.get<DiscoveryType[]>(this._incidentUrl + this._discoveryType)
       .pipe(
-        tap(data => console.log('All: ' + JSON.stringify(data))),
+        // tap(data => console.log('All: ' + JSON.stringify(data))),
         retry(3),
         catchError(this.handleErrors)
       );
   }
   getQuadrants(): Observable<Quadrant[]> {
-    return this.http.get<Quadrant[]>(this._incidentUrl + this._quadrant, httpOptions)
+    return this.http.get<Quadrant[]>(this._incidentUrl + this._quadrant)
       .pipe(
-        tap(data => console.log('All: ' + JSON.stringify(data))),
+        // tap(data => console.log('All: ' + JSON.stringify(data))),
         retry(3),
         catchError(this.handleErrors)
       );
   }
   getReleaseCauseTypes(): Observable<ReleaseCauseType[]> {
-    return this.http.get<ReleaseCauseType[]>(this._incidentUrl + this._releaseCauseType, httpOptions)
+    return this.http.get<ReleaseCauseType[]>(this._incidentUrl + this._releaseCauseType)
       .pipe(
-        tap(data => console.log('All: ' + JSON.stringify(data))),
+        // tap(data => console.log('All: ' + JSON.stringify(data))),
         retry(3),
         catchError(this.handleErrors)
       );
   }
   getSiteTypes(): Observable<SiteType[]> {
-    return this.http.get<SiteType[]>(this._incidentUrl + this._siteType, httpOptions)
+    return this.http.get<SiteType[]>(this._incidentUrl + this._siteType)
       .pipe(
-        tap(data => console.log('All: ' + JSON.stringify(data))),
+        // tap(data => console.log('All: ' + JSON.stringify(data))),
         retry(3),
         catchError(this.handleErrors)
       );
   }
   getSourceTypes(): Observable<SourceType[]> {
-    return this.http.get<SourceType[]>(this._incidentUrl + this._sourceType, httpOptions)
+    return this.http.get<SourceType[]>(this._incidentUrl + this._sourceType)
       .pipe(
-        tap(data => console.log('All: ' + JSON.stringify(data))),
+        // tap(data => console.log('All: ' + JSON.stringify(data))),
         retry(3),
         catchError(this.handleErrors)
       );
   }
   getStates(): Observable<State[]> {
-    return this.http.get<State[]>(this._incidentUrl + this._state, httpOptions)
+    return this.http.get<State[]>(this._incidentUrl + this._state)
       .pipe(
-        tap(data => console.log('All: ' + JSON.stringify(data))),
+        // tap(data => console.log('All: ' + JSON.stringify(data))),
         retry(3),
         catchError(this.handleErrors)
       );
   }
   getStreetTypes(): Observable<StreetType[]> {
-    return this.http.get<StreetType[]>(this._incidentUrl + this._streetType, httpOptions)
+    return this.http.get<StreetType[]>(this._incidentUrl + this._streetType)
       .pipe(
-        tap(data => console.log('All: ' + JSON.stringify(data))),
+        // tap(data => console.log('All: ' + JSON.stringify(data))),
         retry(3),
         catchError(this.handleErrors)
       );
   }
 
   createIncident(incident: Incident): Observable<Incident> {
-    return this.http.post(this._incidentUrl + this._incident, incident, httpOptions)
+    return this.http.post(this._incidentUrl + this._incident, incident)
     .pipe(
-      tap(data => console.log('All: ' + JSON.stringify(data))),
+      // tap(data => console.log('All: ' + JSON.stringify(data))),
       catchError(this.handleErrors)
     );
   }

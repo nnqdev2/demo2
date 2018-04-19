@@ -82,9 +82,9 @@ export class LogWebApi extends LogPublisher {
   }
 
   log(record: LogEntry): Observable<boolean> {
-    const httpOptions = {
-        headers: new HttpHeaders({ 'Content-Type': 'application/json'})
-      };
+    // const httpOptions = {
+    //     headers: new HttpHeaders({ 'Content-Type': 'application/json'})
+    //   };
 
       this.location = environment.olprrapi + 'log';
 
@@ -93,16 +93,13 @@ export class LogWebApi extends LogPublisher {
     //   .catch(this.handleErrors);
 
     const testJSON = JSON.stringify(record);
-    console.error('$$$$$$$$$$$$$$$$$$$ log api: ' + this.location);
-    console.error('$$$$$$$$$$$$$$$$$$$ log api payload: ' + (record));
-    console.error('$$$$$$$$$$$$$$$$$$$ log api payload: ' + JSON.stringify(record));
+    console.error('*** LOGWEBAPI.LOG: ' + this.location);
+    console.error('*** LOGWEBAPI.LOG:  log api payload: ' + JSON.stringify(record));
     console.error(record);
-    console.error('$$$$$$$$$$$$$$$$$$$ log api: ' + this.location);
-    console.error('$$$$$$$$$$$$$$$$$$$ log api: ' + this.location);
-    console.error('$$$$$$$$$$$$$$$$$$$ log api: ' + this.location);
-    return this.http.post(this.location, testJSON, httpOptions)
+
+    return this.http.post(this.location, testJSON)
         .pipe(
-        tap(data => console.log('All: ' + JSON.stringify(data))),
+        tap(data => console.error('**********$$$$$$$All: ' + JSON.stringify(data))),
         catchError(this.handleErrors)
         );
   }
@@ -116,19 +113,21 @@ export class LogWebApi extends LogPublisher {
     const errors: string[] = [];
     let msg = '';
 
-    console.error('####An error occurred in log-publishers handlerErrors routine#####');
+    console.error('**** LOGPUBLISHER.HANDLEERRORS  error 111');
     console.error( error );
-    console.error('####An error occurred in log-publishers handlerErrors routine#####');
+    console.error('**** LOGPUBLISHER.HANDLEERRORS  error 111');
 
     msg = 'Status: ' + error.status;
     msg += ' - Status Text: ' + error.statusText;
-    if (error.json()) {
-      msg += ' - Exception Message: ' + error.json().exceptionMessage;
-    }
+    // if (error.json()) {
+    //   msg += ' - Exception Message: ' + error.json().exceptionMessage;
+    // }
 
     errors.push(msg);
 
-
+    console.error('**** LOGPUBLISHER.HANDLEERRORS errors 222');
+    console.error( errors );
+    console.error('**** LOGPUBLISHER.HANDLEERRORS errors 222');
 
     return Observable.throw(errors);
   }

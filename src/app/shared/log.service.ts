@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { LogPublisher } from './log-publishers';
 import { LogPublishersService } from './log-publishers.service';
+import { getLocaleDateTimeFormat } from '@angular/common';
 
 export enum LogLevel {
   All = 0,
@@ -14,10 +15,11 @@ export enum LogLevel {
 
 export class LogEntry {
   // Public properties
-  entryDate: Date = new Date();
+  entryDate = new Date().toLocaleString();
   message = '';
-  level: LogLevel = LogLevel.Debug;
-  extraInfo: any[] = [];
+  logLevel: LogLevel = LogLevel.Debug;
+  // extraInfo: any[] = [];
+  // extraInfo = '';
   logWithDate = true;
 
   buildLogString(): string {
@@ -26,11 +28,11 @@ export class LogEntry {
     if (this.logWithDate) {
       ret = new Date() + ' - ';
     }
-    ret += 'Type: ' + LogLevel[this.level];
+    ret += 'Type: ' + LogLevel[this.logLevel];
     ret += ' - Message: ' + this.message;
-    if (this.extraInfo.length) {
-      ret += ' - Extra Info: ' + this.formatParams(this.extraInfo);
-    }
+    // if (this.extraInfo.length) {
+    //   ret += ' - Extra Info: ' + this.formatParams(this.extraInfo);
+    // }
 
     return ret;
   }
@@ -56,14 +58,14 @@ export class LogService {
   }
 
   // Public properties
-  level: LogLevel = LogLevel.All;
+  logLevel: LogLevel = LogLevel.All;
   logWithDate = true;
   publishers: LogPublisher[];
 
   private shouldLog(level: LogLevel): boolean {
     let ret = false;
 
-    if (this.level !== LogLevel.Off && level >= this.level) {
+    if (this.logLevel !== LogLevel.Off && level >= this.logLevel) {
       ret = true;
     }
 
@@ -83,10 +85,9 @@ export class LogService {
   }
 
   error(msg: string, ...optionalParams: any[]) {
-    console.log ('*****logservice.error msg:' + msg + ' optionalParams: ' + optionalParams);
-    console.log ('*****logservice.error msg:' + msg + ' optionalParams: ' + optionalParams);
-    console.log ('*****logservice.error msg:' + msg + ' optionalParams: ' + optionalParams);
+    console.error ('***** LOGSERVICE.ERROR  about to this.writeToLog  msg:' + msg + ' optionalParams: ' + optionalParams);
     this.writeToLog(msg, LogLevel.Error, optionalParams);
+    console.error ('***** LOGSERVICE.ERROR  done this.writeToLog  msg:' + msg + ' optionalParams: ' + optionalParams);
   }
 
   fatal(msg: string, ...optionalParams: any[]) {
@@ -103,31 +104,25 @@ export class LogService {
     }
   }
 
-  private writeToLog(msg: string, level: LogLevel, params: any[]) {
-    if (this.shouldLog(level)) {
+  private writeToLog(msg: string, logLevel: LogLevel, params: any[]) {
+    if (this.shouldLog(logLevel)) {
       const entry: LogEntry = new LogEntry();
 
+      console.error ('***** LOGSERVICE.WRITETOLOG  1  msg:' + msg + ' optionalParams: ' + params);
 
-      console.log('************writeToLog: 1111 msg, params ==>' );
-      console.log( msg ) ;
-      console.log( params);
-      console.log('************writeToLog: 1111 msg, params ==>' );
       entry.message = msg;
-      entry.level = level;
-      entry.extraInfo = params;
+      entry.logLevel = logLevel;
+      // entry.extraInfo = params;
       entry.logWithDate = this.logWithDate;
 
-      console.log('************writeToLog: 2222 entry.message, entry.extraInfo ==>' );
-      console.log( entry.message ) ;
-      console.log( entry.extraInfo);
-      console.log('************writeToLog: 2222 entry.message, entry.extraInfo ==>' );
-
-      console.log('************where am i?????');
-
+      console.error ('***** LOGSERVICE.WRITETOLOG  2  entry record' );
+      console.log( entry ) ;
+      console.error ('***** LOGSERVICE.WRITETOLOG  2  entry record' );
+      const entryJson = JSON.stringify(entry);
 
       // Log the value to all publishers
       for (const logger of this.publishers) {
-        logger.log(entry).subscribe(response => console.log('*********** publisherssss writeToLog: location ' +
+        logger.log(entry).subscribe(response => console.error ('***** LOGSERVICE.WRITETOLOG 3: location ' +
         logger.location + ' response===> ' + response));
       }
     }

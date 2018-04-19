@@ -42,9 +42,6 @@ export class HttpErrorHandler {
       console.error(result);
       console.error('***** HTTPERRORHANDLER handleError<T> Starts  2 =====');
 
-
-
-
       const testJSON = JSON.stringify(error);
 
 
@@ -52,18 +49,18 @@ export class HttpErrorHandler {
       console.error(testJSON); // log to console instead
       console.error('***** HTTPERRORHANDLER handleError<T> Starts  3 log error'); // log to console instead
 
-      this.logService.error(testJSON, [testJSON] );
+      console.error('***** HTTPERRORHANDLER handleError<T> Starts 4 about to call logService'); // log to console instead
 
-
-
+      this.logService.error(testJSON );
+      console.error('***** HTTPERRORHANDLER handleError<T> Starts 4 done calling logService'); // log to console instead
 
       const message = (error.error instanceof ErrorEvent) ?
         error.error.message :
        `server returned code ${error.status} with body "${testJSON}"`;
 
-       console.error('***** HTTPERRORHANDLER handleError<T> Starts 4 message'); // log to console instead
+       console.error('***** HTTPERRORHANDLER handleError<T> Starts 5 message'); // log to console instead
        console.error(message);
-       console.error('***** HTTPERRORHANDLER handleError<T> Starts 4 message'); // log to console instead
+       console.error('***** HTTPERRORHANDLER handleError<T> Starts 5 message'); // log to console instead
 
       // TODO: better job of transforming error for user consumption
       this.messageService.add(`${serviceName}: ${operation} failed: ${message}`);

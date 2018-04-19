@@ -17,6 +17,8 @@ import { ShowErrorsComponent } from './show-errors/show-errors.component';
 import { IncidentComponent } from './incident/incident.component';
 import { MessagesComponent } from './messages/messages.component';
 
+import { httpInterceptorProviders } from './http-interceptors/index';
+
 @NgModule({
   imports: [
     BrowserModule
@@ -37,7 +39,8 @@ import { MessagesComponent } from './messages/messages.component';
     HttpErrorHandler,
     MessageService,
     LogService, LogPublishersService,
-    {provide: ErrorHandler, useClass: AppErrorHandler}
+    {provide: ErrorHandler, useClass: AppErrorHandler},
+    httpInterceptorProviders
     ],
   bootstrap: [AppComponent]
 })
