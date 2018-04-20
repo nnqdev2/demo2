@@ -49,13 +49,20 @@
                                     </select>    
                                     <app-show-errors [control]="incidentForm.controls.releaseType"></app-show-errors>                            
                             </div>
-
                             <!-- /Site Type -->
                             <!-- DEQ UST Facility ID  -->
-                            <div class="form-group col-md-4 mt-2"   >
-                                <label class="control-label" for="facilityId">DEQ UST Facility ID</label>
-                                <input type="text" class="form-control" id="facilityId" formControlName="facilityId"/>
-                            </div>
+                            <div *ngIf="showInvoiceContact; then showFacility"></div>
+                            <ng-template #showFacility> 
+
+
+                                <div class="form-group col-md-4 mt-2"   >
+                                    <label class="control-label" for="facilityId">DEQ UST Facility ID</label>
+                                    <input type="text" class="form-control" id="facilityId" formControlName="facilityId"/>
+                                </div>
+                            </ng-template>
+
+
+
                             <!-- /DEQ UST Facility ID -->
                         </div>
                         <!-- /SiteType FacilityId -->
@@ -493,7 +500,7 @@
                             <!-- Site Comments -->
                             <div class="form-row mt-4">
                                 <div class="form-group col-sm-12 pb-3">
-                                    <label for="siteComments">Please enter a comment for the LUST incident (limit 704 characters)</label>
+                                    <label for="siteComments">Please enter a comment for the LUST incident (limit 717 characters)</label>
                                     <textarea type="textarea" class="form-control" id="siteComments"  maxlength="704" rows=6  formControlName="initialComment"></textarea>
                                 </div>    
                             </div>
