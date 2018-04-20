@@ -18,6 +18,7 @@ import { IncidentComponent } from './incident/incident.component';
 import { MessagesComponent } from './messages/messages.component';
 
 import { httpInterceptorProviders } from './http-interceptors/index';
+import { RequestCache, RequestCacheWithMap } from './request-cache.service';
 
 @NgModule({
   imports: [
@@ -40,7 +41,8 @@ import { httpInterceptorProviders } from './http-interceptors/index';
     MessageService,
     LogService, LogPublishersService,
     {provide: ErrorHandler, useClass: AppErrorHandler},
-    httpInterceptorProviders
+    httpInterceptorProviders,
+    { provide: RequestCache, useClass: RequestCacheWithMap }
     ],
   bootstrap: [AppComponent]
 })

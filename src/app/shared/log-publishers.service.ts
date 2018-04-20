@@ -55,19 +55,24 @@ export class LogPublishersService {
   }
 
   private handleErrors(error: any): Observable<any> {
-    const errors: string[] = [];
-    let msg = '';
+    // const errors: string[] = [];
+    // let msg = '';
 
-    msg = 'Status: ' + error.status;
-    msg += ' - Status Text: ' + error.statusText;
-    if (error.json()) {
-      msg += ' - Exception Message: ' + error.json().exceptionMessage;
-    }
+    // msg = 'Status: ' + error.status;
+    // msg += ' - Status Text: ' + error.statusText;
+    // if (error.json()) {
+    //   msg += ' - Exception Message: ' + error.json().exceptionMessage;
+    // }
 
-    errors.push(msg);
+    // errors.push(msg);
 
-    console.error('An error occurred', errors);
+    // console.error('An error occurred', errors);
 
-    return Observable.throw(errors);
+    // return Observable.throw(errors);
+
+
+    console.error('An error occurred', error);
+
+    return Observable.throw(error);
   }
 }

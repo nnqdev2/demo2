@@ -50,6 +50,7 @@ export class IncidentComponent implements OnInit {
 
 
   ngOnInit() {
+    console.error('****incident component init method ****');
     this.getSiteTypes();
     this.getConfirmationTypes();
     this.getCounties();
@@ -60,6 +61,7 @@ export class IncidentComponent implements OnInit {
     this.getStates();
     this.getStreetTypes();
     this.createForm();
+    this.getSiteTypes();
   }
 
 
@@ -200,9 +202,12 @@ export class IncidentComponent implements OnInit {
   }
   onCreateComplete(): void {
     // Reset the form to clear the flags
-    console.log('ok did it!!!!');
+    console.log('ok did it hip hip hoorayyy!!!!');
     this.incidentForm.reset();
-    throw new Error('ERRRRRRRRRRRRRRRRRRRRRRRRRRR');
+    this.incidentForm.patchValue({
+      dateReceived: this.datePipe.transform(new Date(), 'MM-dd-yyyy')
+    });
+    // throw new Error('ERRRRRRRRRRRRRRRRRRRRRRRRRRR');
   }
 
   getConfirmationTypes() {
