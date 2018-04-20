@@ -17,13 +17,19 @@ export class ShowErrorsComponent {
     'countryCity': (params) => params.message,
     'uniqueName': (params) => params.message,
     'telephoneNumbers': (params) => params.message,
-    'telephoneNumber': (params) => params.message
+    'telephoneNumber': (params) => params.message,
+    'selectOneOrMoreMedia': 'Select one or more media'
   };
 
   @Input()
   private control: AbstractControlDirective | AbstractControl;
 
   shouldShowErrors(): boolean {
+
+    console.log('****** ShowErrorsComponent shouldShowErrors()  this.control.dirty this.control.touched this.control.errors  ');
+    console.log(this.control.dirty);
+    console.log(this.control.touched);
+    console.log(this.control.errors);
     return this.control &&
       this.control.errors &&
       (this.control.dirty || this.control.touched);

@@ -20,6 +20,7 @@ import { SourceType } from '../models/source-type';
 import { State } from '../models/state';
 import { StreetType } from '../models/street-type';
 import { Incident } from '../models/incident';
+import { IncidentValidators } from '../validators/incident.validator';
 
 
 @Component({
@@ -95,7 +96,7 @@ export class IncidentComponent implements OnInit {
       rpFirstName:  ['', Validators.required],
       rpLastName: ['', Validators.required],
       rpOrganization:  ['', Validators.required],
-      rpAddress:  [''],
+      rpAddress:  ['', Validators.required],
       rpAddress2: [''],
       rpCity:  ['', Validators.required],
       rpState:  ['', Validators.required],
@@ -132,7 +133,9 @@ export class IncidentComponent implements OnInit {
       mtbe: [''],
       submitDateTime: [''],
       deqOffice: ['']
-    });
+    },
+    {validator: IncidentValidators.selectOneOrMoreMedia}
+  );
     this.incidentForm.patchValue({
       dateReceived: this.datePipe.transform(new Date(), 'MM-dd-yyyy')
     });
