@@ -24,7 +24,7 @@
                                 <label for="dateReceived">Date Reported</label>
                                 <input formControlName="dateReceived" type="text" class="form-control" id="dateReceived"  />
                         </div>
-                        <div class="input-group">
+                        <div class="input-group required">
                             <label class="control-label col-12" for="dateReleaseDiscovered">Date Release Discovered</label>
                             <input class="form-control required mt-2 col-md-4" 
                                    name="dp" formControlName="discoveryDate" id="dateReleaseDiscovered" ngbDatepicker #d="ngbDatepicker">
@@ -439,6 +439,49 @@
                                             </label>
                                         </div>
                                     </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="checkbox" formControlName="lubricant">Lubricant
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="checkbox" formControlName="solvent">Solvent
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="checkbox" formControlName="otherPet">Other Pet. Dist.  
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="checkbox" formControlName="chemical">Chemical
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="checkbox" formControlName="mtbe">MTBE  
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="checkbox" formControlName="unknown">Unknown Contaminant   
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <app-show-errors [control]="incidentForm.controls.heatingOil"></app-show-errors>
                                 </div>
     
     
@@ -495,10 +538,19 @@
                                     </div>
                                 </div>
                                 <app-show-errors [control]="incidentForm.controls.groundWater"></app-show-errors>
+                                <!-- <ul *ngIf="!incidentForm.controls.groundWater.touched &&  !incidentForm.controls.surfaceWater.touched && !incidentForm.controls.surfaceWater.touched
+                                && !incidentForm.controls.drinkingWater.touched  && !incidentForm.controls.soil.touched && !incidentForm.controls.vapor.touched
+                                && !incidentForm.controls.soil.freeProduct.touched 
+                                && incidentForm.controls.groundWater.dirty &&  incidentForm.controls.surfaceWater.dirty && incidentForm.controls.surfaceWater.dirty
+                                && incidentForm.controls.drinkingWater.dirty  && incidentForm.controls.soil.dirty && incidentForm.controls.vapor.dirty
+                                && incidentForm.controls.soil.freeProduct.dirty 
+                                ">
+                                    <li style="color: red">One or more selection required</li>
+                                </ul> -->
                             </div>
 
 
-                            
+
 
     
                             <p class="text-left font-weight-bold pl-1" style="background-color: darkSeaGreen">Site Comments</p>

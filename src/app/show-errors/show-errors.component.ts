@@ -18,7 +18,8 @@ export class ShowErrorsComponent {
     'uniqueName': (params) => params.message,
     'telephoneNumbers': (params) => params.message,
     'telephoneNumber': (params) => params.message,
-    'selectOneOrMoreMedia': 'Select one or more media'
+    'groundWaterError': 'Select one or more Media',
+    'heatingOilError': 'Select one or more Contaminants'
   };
 
   @Input()
@@ -27,6 +28,7 @@ export class ShowErrorsComponent {
   shouldShowErrors(): boolean {
 
     console.log('****** ShowErrorsComponent shouldShowErrors()  this.control.dirty this.control.touched this.control.errors  ');
+    console.log(this.control);
     console.log(this.control.dirty);
     console.log(this.control.touched);
     console.log(this.control.errors);
@@ -41,6 +43,9 @@ export class ShowErrorsComponent {
   }
 
   private getMessage(type: string, params: any) {
+    console.log('****** ShowErrorsComponent getMessage type params ');
+    console.log(type);
+    console.log(params);
     return ShowErrorsComponent.errorMessages[type](params);
   }
 

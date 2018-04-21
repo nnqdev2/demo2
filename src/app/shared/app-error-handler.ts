@@ -8,7 +8,7 @@ export class AppErrorHandler implements ErrorHandler {
     constructor(@Inject(forwardRef(() => LogService)) private logService: LogService) { }
     handleError(error) {
         console.log('*******AppErrorHandler error $error');
-        console.log(`*********error====> ` + JSON.stringify(error));
+        console.log(`*********error====> ` + error);
 
         // const logService = this.injector.get(LogService);
         const message = error.message ? error.message : error.toString();

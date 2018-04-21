@@ -2,3 +2,8 @@
     content:"*";
     color:red;
   }
+
+.input-group.required .control-label:after{
+  content:"*";
+  color:red;
+}
