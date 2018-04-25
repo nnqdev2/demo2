@@ -17,9 +17,13 @@ export class IncidentValidators {
       // console.error('************selectOneOrMoreMedia at least one value checked');
       return null;
     } else {
-      groundWater.setErrors({ ['groundWaterError'] : true});
+      // groundWater.setErrors({ ['groundWaterError'] : true});
       // console.error('************selectOneOrMoreMedia no value checked');
-      return { selectOneOrMoreMedia: true};
+      return {
+        oneOrMoreMedia: {
+          oneOrMoreMedia: true
+        }
+      }
     }
     // return email.value === confirm.value ? null : { nomatch: true };
   }
@@ -44,7 +48,7 @@ export class IncidentValidators {
       // console.error('************selectOneOrMoreMedia at least one value checked');
       return null;
     } else {
-      heatingOil.setErrors({ ['heatingOilError'] : true});
+      // heatingOil.setErrors({ ['heatingOilError'] : true});
       return { selectOneOrMoreContaminants: true};
     }
     // return email.value === confirm.value ? null : { nomatch: true };
