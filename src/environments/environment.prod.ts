@@ -1,4 +1,5 @@
 export const environment = {
   production: true,
-  olprrapi: 'http://nquanrest1/olprr/'
+  olprrapi_nquan: 'http://nquanrest2/olprr/',
+  olprrapi: 'http://deqwebdev/olprrnew/olprr/'
 };

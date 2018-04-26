@@ -5,5 +5,6 @@
 
 export const environment = {
     production: false,
-    olprrapi: 'http://nquanrest1/olprr/'
+    olprrapi_nquan: 'http://nquanrest2/olprr/',
+    olprrapi: 'http://deqwebdev/olprrnew/olprr/'
   };
