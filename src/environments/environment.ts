@@ -5,5 +5,5 @@
 
 export const environment = {
   production: false,
-  olprrapi: 'http://nquanrest1/olprr/'
+  olprrapi: 'http://nquanrest2/olprr/'
 };

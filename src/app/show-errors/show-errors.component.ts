@@ -27,11 +27,11 @@ export class ShowErrorsComponent {
 
   shouldShowErrors(): boolean {
 
-    console.log('****** ShowErrorsComponent shouldShowErrors()  this.control.dirty this.control.touched this.control.errors  ');
-    console.log(this.control);
-    console.log(this.control.dirty);
-    console.log(this.control.touched);
-    console.log(this.control.errors);
+    // console.log('****** ShowErrorsComponent shouldShowErrors()  this.control.dirty this.control.touched this.control.errors  ');
+    // console.log(this.control);
+    // console.log(this.control.dirty);
+    // console.log(this.control.touched);
+    // console.log(this.control.errors);
     return this.control &&
       this.control.errors &&
       (this.control.dirty || this.control.touched);
@@ -43,9 +43,9 @@ export class ShowErrorsComponent {
   }
 
   private getMessage(type: string, params: any) {
-    console.log('****** ShowErrorsComponent getMessage type params ');
-    console.log(type);
-    console.log(params);
+    // console.log('****** ShowErrorsComponent getMessage type params ');
+    // console.log(type);
+    // console.log(params);
     return ShowErrorsComponent.errorMessages[type](params);
   }
 

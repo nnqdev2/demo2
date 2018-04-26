@@ -15,7 +15,7 @@ export abstract class RequestCache {
 }
 
 // const maxAge = 30000; // maximum cache age (ms)
-const maxAge = 600000; // maximum cache age (ms)
+const maxAge = 3000; // maximum cache age (ms)
 
 @Injectable()
 export class RequestCacheWithMap implements RequestCache {
@@ -27,37 +27,37 @@ export class RequestCacheWithMap implements RequestCache {
   get(req: HttpRequest<any>): HttpResponse<any> | undefined {
     const url = req.urlWithParams;
 
-    // console.log('******** RequestCacheWithMap get url 1111');
-    // console.log(url);
-    // console.log('******** RequestCacheWithMap get url 1111');
+    console.log('******** RequestCacheWithMap get url 1111');
+    console.log(url);
+    console.log('******** RequestCacheWithMap get url 1111');
     const cached = this.cache.get(url);
 
-    // console.log('******** RequestCacheWithMap get cached 2222');
-    // console.log(cached);
-    // console.log('******** RequestCacheWithMap get cached 2222');
+    console.log('******** RequestCacheWithMap get cached 2222');
+    console.log(cached);
+    console.log('******** RequestCacheWithMap get cached 2222');
 
     if (!cached) {
-      // console.log('******** RequestCacheWithMap get returning undefined for cached 3333');
-      // console.log(cached);
-      // console.log('******** RequestCacheWithMap get returning undefined for cached 3333');
+      console.log('******** RequestCacheWithMap get returning undefined for cached 3333');
+      console.log(cached);
+      console.log('******** RequestCacheWithMap get returning undefined for cached 3333');
       return undefined;
     }
 
-    // console.log('******** RequestCacheWithMap get cached.lastRead  4444');
-    // console.log(cached.lastRead );
-    // console.log('******** RequestCacheWithMap get cached.lastRead  4444');
+    console.log('******** RequestCacheWithMap get cached.lastRead  4444');
+    console.log(cached.lastRead );
+    console.log('******** RequestCacheWithMap get cached.lastRead  4444');
 
     const isExpired = cached.lastRead < (Date.now() - maxAge);
     const expired = isExpired ? 'expired ' : '';
     this.messenger.add(
       `Found ${expired}cached response for "${url}".`);
 
-    // console.log('******** RequestCacheWithMap get  isExpired    5555');
-    // console.log(isExpired );
-    // console.log('******** RequestCacheWithMap get messenger 5555');
-    // console.log(isExpired );
-    // console.log('******** RequestCacheWithMap get cached.response 5555');
-    // console.log(cached.response );
+    console.log('******** RequestCacheWithMap get  isExpired    5555');
+    console.log(isExpired );
+    console.log('******** RequestCacheWithMap get messenger 5555');
+    console.log(isExpired );
+    console.log('******** RequestCacheWithMap get cached.response 5555');
+    console.log(cached.response );
 
 
     return isExpired ? undefined : cached.response;
@@ -67,36 +67,36 @@ export class RequestCacheWithMap implements RequestCache {
     const url = req.urlWithParams;
     this.messenger.add(`Caching response from "${url}".`);
 
-    // console.log('**************REQUESTCACHESERVICE put req 1111111');
-    // console.log(req);
-    // console.log('**************REQUESTCACHESERVICE put response 1111111');
-    // console.log(response);
-    // console.log('**************REQUESTCACHESERVICE put 1111111');
+    console.log('**************REQUESTCACHESERVICE put req 1111111');
+    console.log(req);
+    console.log('**************REQUESTCACHESERVICE put response 1111111');
+    console.log(response);
+    console.log('**************REQUESTCACHESERVICE put 1111111');
 
 
     const entry = { url, response, lastRead: Date.now() };
     this.cache.set(url, entry);
 
-    // console.log('**************REQUESTCACHESERVICE put entry 2222222');
-    // console.log(entry);
+    console.log('**************REQUESTCACHESERVICE put entry 2222222');
+    console.log(entry);
 
 
     // remove expired cache entries
     const expired = Date.now() - maxAge;
 
-    // console.log('**************REQUESTCACHESERVICE put expired 33333333');
-    // console.log(expired);
+    console.log('**************REQUESTCACHESERVICE put expired 33333333');
+    console.log(expired);
 
     this.cache.forEach ( entry => {
-      // console.log('**************REQUESTCACHESERVICE put entry in loop 444444');
-      // console.log(entry);
+      console.log('**************REQUESTCACHESERVICE put entry in loop 444444');
+      console.log(entry);
       if (entry.lastRead < expired) {
         this.cache.delete(entry.url);
       }
     });
 
     this.messenger.add(`Request cache size: ${this.cache.size}.`);
-    // console.log('**************REQUESTCACHESERVICE put this.messenger 555555');
-    // console.log(this.messenger);
+    console.log('**************REQUESTCACHESERVICE put this.messenger 555555');
+    console.log(this.messenger);
   }
 }

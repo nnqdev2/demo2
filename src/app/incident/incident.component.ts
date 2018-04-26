@@ -53,13 +53,6 @@ export class IncidentComponent implements OnInit {
 
 
   ngOnInit() {
-    // console.error('****incident component init method ****');
-
-
-    // this.impactedMedia = [
-    //   {name: 'Ground Water'}
-    // ];
-
     this.getSiteTypes();
     this.getConfirmationTypes();
     this.getCounties();
@@ -412,7 +405,7 @@ export class IncidentComponent implements OnInit {
     releaseType:  'R',
     dateReceived: this.datePipe.transform(new Date(), 'MM-dd-yyyy'),
     facilityId: 2,
-    siteName:  'sitename',
+    siteName:  'Disneyland',
     siteCounty:  '12',
     streetNbr: '12',
     streetQuad:  'W',

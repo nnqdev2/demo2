@@ -27,42 +27,42 @@ export class CachingInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler) {
 
-    // console.log('**************CachingInterceptor  intercept req 00000');
-    // console.log(req);
+    console.log('**************CachingInterceptor  intercept req 00000');
+    console.log(req);
 
     // continue if not cachable.
     if (!isCachable(req)) { return next.handle(req); }
 
-    // console.log('**************CachingInterceptor  intercept req is cacheable 00000');
-    // console.log(req);
+    console.log('**************CachingInterceptor  intercept req is cacheable 00000');
+    console.log(req);
 
     const cachedResponse = this.cache.get(req);
 
 
-    // console.log('**************CachingInterceptor  intercept cachedResponse 00000');
-    // console.log(cachedResponse);
+    console.log('**************CachingInterceptor  intercept cachedResponse 00000');
+    console.log(cachedResponse);
 
 
     // cache-then-refresh
     if (req.headers.get('x-refresh')) {
       const results$ = sendRequest(req, next, this.cache);
-      // console.log('**************CachingInterceptor intercept 2222');
-      // console.log(results$);
-      // console.log('**************CachingInterceptor intercept 2222');
+      console.log('**************CachingInterceptor intercept 2222');
+      console.log(results$);
+      console.log('**************CachingInterceptor intercept 2222');
       return cachedResponse ?
         results$.pipe( startWith(cachedResponse) ) :
         results$;
     }
 
     if (cachedResponse) {
-      // console.log('**************CachingInterceptor  intercept cachedResponse == true 3333');
-      // console.log(cachedResponse);
-      // console.log('**************CachingInterceptor intercept  cachedResponse === true 3333');
+      console.log('**************CachingInterceptor  intercept cachedResponse == true 3333');
+      console.log(cachedResponse);
+      console.log('**************CachingInterceptor intercept  cachedResponse === true 3333');
       return of(cachedResponse);
     } else {
-      // console.log('**************CachingInterceptor intercept  cachedResponse == false 4444');
-      // console.log(cachedResponse);
-      // console.log('**************CachingInterceptor  intercept cachedResponse === false 4444');
+      console.log('**************CachingInterceptor intercept  cachedResponse == false 4444');
+      console.log(cachedResponse);
+      console.log('**************CachingInterceptor  intercept cachedResponse === false 4444');
       return sendRequest(req, next, this.cache);
     }
 
