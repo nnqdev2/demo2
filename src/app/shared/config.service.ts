@@ -55,12 +55,11 @@ export class ConfigService {
   // }
 
   getConfig(): Observable<IConfig> {
-    console.error('*************** ConfigService getConfigs =====' );
+    console.error('*************** ConfigService getConfig' );
     return this.http.get<IConfig>('./assets/config.json')
     .pipe(
-      tap(data => console.log('All Configs: ' + JSON.stringify(data)))
-      // ,
-      // catchError(this.handleError<IConfig>('getConfigs', []))
+      tap(data => console.log('*************** ConfigService getConfig All Configs: ' + JSON.stringify(data)))
+      , catchError(this.handleError<IConfig>('getConfig' ))
     );
   }
 

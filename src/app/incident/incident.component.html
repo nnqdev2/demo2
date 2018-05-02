@@ -7,6 +7,9 @@
     </head>
 
     <body>
+
+
+
         <!-- table lustReportingTable  -->
         <!-- <table id="lustReportingTable"> -->
             <div class="container-fluid">   
@@ -19,19 +22,19 @@
                  
                      <!-- Form incidentForm begins -->
                      <form [formGroup]="incidentForm" class="form" role="form" autocomplete="off" method="POST"  (ngSubmit)="createIncident()">
-                        <!-- Date Reported -->
+                        <!-- Date Released Discovered -->
                         <div class="form-group col-md-2 mt-2">                               
-                                <label for="dateReceived">Date Reported</label>
-                                <input formControlName="dateReceived" type="text" class="form-control" id="dateReceived"  />
+                            <label for="dateReceived">Date Reported</label>
+                            <input formControlName="dateReceived" type="text" class="form-control" id="dateReceived"  />
                         </div>
-                        <div class="input-group required">
+                        <div class="input-group">
                             <label class="control-label col-12" for="dateReleaseDiscovered">Date Release Discovered</label>
                             <input class="form-control required mt-2 col-md-4" 
-                                   name="dp" formControlName="discoveryDate" id="dateReleaseDiscovered" ngbDatepicker #d="ngbDatepicker">
+                                name="dp" formControlName="discoveryDate" id="dateReleaseDiscovered" ngbDatepicker #d="ngbDatepicker">
                             <div class="input-group-append">
-                              <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
+                            <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
                                 <img src="./assets/images/calendar.png" />
-                              </button>
+                            </button>
                             </div>
                         </div>
                         <!-- /Date Released Discovered -->
@@ -46,8 +49,8 @@
                                             [value]="siteType.siteTypeCode" >
                                             {{siteType.siteType}}
                                     </option>
-                                    </select>    
-                                    <app-show-errors [control]="incidentForm.controls.releaseType"></app-show-errors>                            
+                                </select>    
+                                <app-show-errors [control]="incidentForm.controls.releaseType"></app-show-errors>                            
                             </div>
                             <!-- /Site Type -->
                             <!-- DEQ UST Facility ID  -->
@@ -557,6 +560,7 @@
 
                             <div class="col-sm-3">
                                 <button type="submit" class="btn btn-success btn-md btn-block" [disabled]="!incidentForm.valid">Submit</button>
+                                <!-- <button type="submit" class="btn btn-success btn-md btn-block" [disabled]="!incidentForm.valid">Submit</button> -->
                                 <!-- <button type="submit" class="btn btn-success btn-md btn-block" >Submit</button> -->
                             </div>
                             <div class="col-sm-3">
@@ -568,6 +572,12 @@
                      <!-- Form incidentForm ends --> 
                 </div>
             </div>
+
+
+
+
+
+
 
     </body>
 

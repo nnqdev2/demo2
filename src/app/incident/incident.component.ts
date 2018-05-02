@@ -1,16 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import {DatePipe} from '@angular/common';
+import { environment } from '../../environments/environment';
 // import 'rxjs/Rx';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/of';
+import { Observable} from 'rxjs/Observable';
+import { map, catchError, tap, retry} from 'rxjs/operators';
 
-import {DatePipe} from '@angular/common';
 import { IncidentDataService } from './incident-data.service';
 import { SiteType } from '../models/site-type';
-
 import { ConfirmationType } from '../models/confirmation-type';
 import { County } from '../models/county';
 import { DiscoveryType } from '../models/discovery-type';
@@ -21,7 +23,7 @@ import { State } from '../models/state';
 import { StreetType } from '../models/street-type';
 import { Incident } from '../models/incident';
 import { IncidentValidators } from '../validators/incident.validator';
-
+import { ConfigService } from '../shared/config.service';
 
 @Component({
   selector: 'app-incident',
@@ -29,6 +31,7 @@ import { IncidentValidators } from '../validators/incident.validator';
   styleUrls: ['./incident.component.css'],
   providers: [ DatePipe, IncidentDataService ]
 })
+
 export class IncidentComponent implements OnInit {
 
   incident: Incident = new Incident();
@@ -46,10 +49,11 @@ export class IncidentComponent implements OnInit {
   currentDate: Date;
   showInvoiceContact = false;
   errorMessage: string;
+  emailPattern = '^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$';
 
-  // impactedMedia: any[] = [];
 
-  constructor(private incidentDataService: IncidentDataService, private formBuilder: FormBuilder, private datePipe: DatePipe) {}
+  constructor(private incidentDataService: IncidentDataService, private formBuilder: FormBuilder, private datePipe: DatePipe
+    , private configService: ConfigService) {}
 
 
   ngOnInit() {
@@ -72,7 +76,7 @@ export class IncidentComponent implements OnInit {
       contractorPwd:  [''],
       reportedBy:  ['', Validators.required],
       reportedByPhone:  ['', Validators.required],
-      reportedByEmail: ['', [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+')]],
+      reportedByEmail: ['', [Validators.required, Validators.email]],
       releaseType:  ['', Validators.required],
       dateReceived:  [{value: '', disabled: true,  validators: Validators.required}],
       facilityId: [''],
@@ -87,7 +91,7 @@ export class IncidentComponent implements OnInit {
       siteZipcode: ['', Validators.required],
       sitePhone:  [''],
       company:  ['', Validators.required],
-      initialComment:  ['', Validators.maxLength(704)],
+      initialComment:  ['', Validators.maxLength(710)],
       discoveryDate: ['', Validators.required],
       confirmationCode:  ['', Validators.required],
       discoveryCode:  ['', Validators.required],
@@ -102,7 +106,7 @@ export class IncidentComponent implements OnInit {
       rpState:  ['', Validators.required],
       rpZipcode: ['', Validators.required],
       rpPhone:  ['', Validators.required],
-      rpEmail:  [''],
+      rpEmail:  ['', [Validators.email]],
       icFirstName:  ['', Validators.required],
       icLastName: ['', Validators.required],
       icOrganization:  ['', Validators.required],
@@ -112,7 +116,7 @@ export class IncidentComponent implements OnInit {
       icState:  ['', Validators.required],
       icZipcode: ['', Validators.required],
       icPhone:  ['', Validators.required],
-      icEmail:  [''],
+      icEmail:  ['', [Validators.email]],
       groundWater: [''],
       surfaceWater: [''],
       drinkingWater: [''],
@@ -135,81 +139,6 @@ export class IncidentComponent implements OnInit {
       deqOffice: ['']
     },
     {validator: [IncidentValidators.selectOneOrMoreMedia, IncidentValidators.selectOneOrMoreContaminants] }
-  );
-    this.incidentForm.patchValue({
-      dateReceived: this.datePipe.transform(new Date(), 'MM-dd-yyyy')
-    });
-  }
-
- createFormOrig() {
-    this.incidentForm = this.formBuilder.group({
-      contractorUid:  [''],
-      contractorPwd:  [''],
-      reportedBy:  ['', Validators.required],
-      reportedByPhone:  ['', Validators.required],
-      reportedByEmail: ['', [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+')]],
-      releaseType:  ['', Validators.required],
-      dateReceived:  [{value: '', disabled: true,  validators: Validators.required}],
-      facilityId: [''],
-      siteName:  ['', Validators.required],
-      siteCounty:  ['', Validators.required],
-      streetNbr: ['', Validators.required],
-      streetQuad:  ['', Validators.required],
-      streetName:  ['', Validators.required],
-      streetType: ['', Validators.required],
-      siteAddress:  [''],
-      siteCity:  ['', Validators.required],
-      siteZipcode: ['', Validators.required],
-      sitePhone:  [''],
-      company:  ['', Validators.required],
-      initialComment:  ['', Validators.maxLength(704)],
-      discoveryDate: ['', Validators.required],
-      confirmationCode:  ['', Validators.required],
-      discoveryCode:  ['', Validators.required],
-      causeCode: ['', Validators.required],
-      sourceId:  ['', Validators.required],
-      rpFirstName:  ['', Validators.required],
-      rpLastName: ['', Validators.required],
-      rpOrganization:  ['', Validators.required],
-      rpAddress:  ['', Validators.required],
-      rpAddress2: [''],
-      rpCity:  ['', Validators.required],
-      rpState:  ['', Validators.required],
-      rpZipcode: ['', Validators.required],
-      rpPhone:  ['', Validators.required],
-      rpEmail:  [''],
-      icFirstName:  ['', Validators.required],
-      icLastName: ['', Validators.required],
-      icOrganization:  ['', Validators.required],
-      icAddress:  [''],
-      icAddress2: [''],
-      icCity:  ['', Validators.required],
-      icState:  ['', Validators.required],
-      icZipcode: ['', Validators.required],
-      icPhone:  ['', Validators.required],
-      icEmail:  [''],
-      groundWater: [''],
-      surfaceWater: [''],
-      drinkingWater: [''],
-      soil: [''],
-      vapor: [''],
-      freeProduct: [''],
-      unleadedGas: [''],
-      leadedGas: [''],
-      misGas: [''],
-      diesel: [''],
-      wasteOil: [''],
-      heatingOil: [''],
-      lubricant: [''],
-      solvent: [''],
-      otherPet: [''],
-      chemical: [''],
-      unknown: [''],
-      mtbe: [''],
-      submitDateTime: [''],
-      deqOffice: ['']
-    },
-    {validator: IncidentValidators.selectOneOrMoreMedia}
   );
     this.incidentForm.patchValue({
       dateReceived: this.datePipe.transform(new Date(), 'MM-dd-yyyy')
@@ -239,6 +168,7 @@ export class IncidentComponent implements OnInit {
 
   createIncident(): void {
     const errors: any[] = this.findInvalidControls();
+
     // if (this.incidentForm.valid) {
     //   console.log('incidentForm Submitted!', this.incidentForm.value);
     // } else {
@@ -248,8 +178,8 @@ export class IncidentComponent implements OnInit {
     if (this.incidentForm.dirty && this.incidentForm.valid) {
 
       this.incidentForm.controls.deqOffice.setValue(this.getDeqOffice());
-      this.incidentForm.controls.contractorUid.setValue('DENNIS');
-      this.incidentForm.controls.contractorPwd.setValue('TERZIAN');
+      this.incidentForm.controls.contractorUid.setValue(environment.contractor_uid);
+      this.incidentForm.controls.contractorPwd.setValue(environment.contractor_pwd);
       this.incidentForm.controls.siteAddress.setValue(`${this.incidentForm.controls.streetNbr.value} `
         + `${this.incidentForm.controls.streetQuad.value} `
         + `${this.incidentForm.controls.streetName.value} `
@@ -274,10 +204,11 @@ export class IncidentComponent implements OnInit {
               () => this.onCreateComplete(),
               (error: any) => this.errorMessage = <any>error
           );
-  } else if (!this.incidentForm.dirty) {
-      this.onCreateComplete();
+      } else if (!this.incidentForm.dirty) {
+          this.onCreateComplete();
+      }
   }
-  }
+
   onCreateComplete(): void {
     // Reset the form to clear the flags
     console.log('ok did it hip hip hoorayyy!!!!');
@@ -286,6 +217,18 @@ export class IncidentComponent implements OnInit {
       dateReceived: this.datePipe.transform(new Date(), 'MM-dd-yyyy')
     });
     // throw new Error('ERRRRRRRRRRRRRRRRRRRRRRRRRRR');
+  }
+
+  getAppConfig() {
+    this.incidentDataService.getConfirmationTypes().subscribe(
+      // the first argument is a function which runs on success
+      data => { this.confirmationTypes = data; },
+      // the second argument is a function which runs on error
+      err => console.error(err)
+      // ,
+      // // the third argument is a function which runs on completion
+      // () => console.log('done loading getConfirmationTypes')
+    );
   }
 
   getConfirmationTypes() {
@@ -416,7 +359,7 @@ export class IncidentComponent implements OnInit {
     siteZipcode: '90099',
     sitePhone: '1231234444',
     company:  'disney',
-    initialComment:  'my init comments',
+    initialComment:  'quack quack quack',
     discoveryDate: this.datePipe.transform(new Date(), 'MM-dd-yyyy'),
     confirmationCode: 'CN',
     discoveryCode:  'OT',
@@ -500,12 +443,12 @@ export class IncidentComponent implements OnInit {
     return deqOffice;
   }
 
-  public findInvalidControls() {
+  private findInvalidControls() {
     const invalid = [];
     const controls = this.incidentForm.controls;
     for (const name in controls) {
         if (controls[name].invalid) {
-            console.log('********** offending name ===>' + name);
+            console.error('********** offending element ===>' + name);
             invalid.push(name);
         }
     }

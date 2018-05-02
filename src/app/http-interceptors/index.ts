@@ -8,5 +8,5 @@ import { CachingInterceptor } from './cache-interceptor';
 /** Http interceptor providers in outside-in order */
 export const httpInterceptorProviders = [
   { provide: HTTP_INTERCEPTORS, useClass: AddHeaderInterceptor, multi: true },
-  // { provide: HTTP_INTERCEPTORS, useClass: CachingInterceptor, multi: true }
+  { provide: HTTP_INTERCEPTORS, useClass: CachingInterceptor, multi: true }
 ];
