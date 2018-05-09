@@ -29,7 +29,8 @@ import { RequestCache, RequestCacheWithMap } from './request-cache.service';
     , NgbModule.forRoot()
     , RouterModule.forRoot([
       { path: '', redirectTo: 'olprr', pathMatch: 'full' },
-      { path: 'olprr', component: IncidentComponent }
+      { path: 'olprr', component: IncidentComponent },
+      { path: '**', redirectTo: 'olprr', pathMatch: 'full' }
     ])
   ],
   declarations: [

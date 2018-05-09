@@ -34,7 +34,6 @@ export class IncidentDataService {
   getConfirmationTypes(): Observable<ConfirmationType[]> {
     return this.http.get<ConfirmationType[]>(environment.olprrapi_confirmationtype)
       .pipe(
-        retry(3),
         catchError(this.handleError<ConfirmationType[]>('getConfirmationTypes', []))
       );
   }
@@ -42,14 +41,12 @@ export class IncidentDataService {
   getCounties(): Observable<County[]> {
     return this.http.get<County[]>(environment.olprrapi_county)
       .pipe(
-        retry(3),
         catchError(this.handleError<County[]>('getCounties', []))
       );
   }
   getDiscoveryTypes(): Observable<DiscoveryType[]> {
     return this.http.get<DiscoveryType[]>(environment.olprrapi_discoverytype)
       .pipe(
-        retry(3),
         catchError(this.handleError<DiscoveryType[]>('getDiscoveryTypes', []))
       );
   }
@@ -57,7 +54,6 @@ export class IncidentDataService {
   getQuadrants(): Observable<Quadrant[]> {
     return this.http.get<Quadrant[]>(environment.olprrapi_quadrant)
       .pipe(
-        retry(3),
         catchError(this.handleError<Quadrant[]>('getQuadrants', []))
       );
   }
@@ -66,7 +62,6 @@ export class IncidentDataService {
     return this.http.get<ReleaseCauseType[]>(environment.olprrapi_releasecausetype)
       .pipe(
         // tap(data => console.log('All: ' + JSON.stringify(data))),
-        retry(3),
         catchError(this.handleError<ReleaseCauseType[]>('getReleaseCauseTypes', []))
       );
   }
@@ -75,7 +70,6 @@ export class IncidentDataService {
     return this.http.get<SiteType[]>(environment.olprrapi_sitetype)
       .pipe(
         tap(data => console.log('All: ' + JSON.stringify(data))),
-        retry(3),
         catchError(this.handleError<SiteType[]>('getSiteTypes', []))
       );
   }
@@ -83,21 +77,18 @@ export class IncidentDataService {
   getSourceTypes(): Observable<SourceType[]> {
     return this.http.get<SourceType[]>(environment.olprrapi_sourcetype)
       .pipe(
-        retry(3),
         catchError(this.handleError<SourceType[]>('getSourceTypes', []))
       );
   }
   getStates(): Observable<State[]> {
     return this.http.get<State[]>(environment.olprrapi_state)
       .pipe(
-        retry(3),
         catchError(this.handleError<State[]>('getStates', []))
       );
   }
   getStreetTypes(): Observable<StreetType[]> {
     return this.http.get<StreetType[]>(environment.olprrapi_streettype)
       .pipe(
-        retry(3),
         catchError(this.handleError<StreetType[]>('getStreetTypes', []))
       );
   }
